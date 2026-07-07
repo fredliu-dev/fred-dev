@@ -1,0 +1,6 @@
+[environments.shokz_us]
+path = "./" # 站点本地文件的路径
+store = "fred-dev-jn1kgwxa.myshopify.com" # 站点
+theme = "189743694112" # 主题id
+ignore = ""
+port = 9202 # 端口
