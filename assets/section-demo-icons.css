@@ -33,7 +33,135 @@
   width: 300px;
 }
 
-.swiper-button-prev,
-.swiper-button-next {
-  display: block !important;
+
+
+@media screen and (min-width: 750px) {
+
+  .swiper-container .swiper-button-prev,
+  .swiper-container .swiper-button-next {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .swiper-container .swiper-button-prev svg,
+  .swiper-container .swiper-button-next svg {
+    height: 18px;
+    width: 9px;
+  }
+
+  .swiper-container .swiper-button-prev svg {
+    transform: translateX(-20%);
+
+  }
+
+  .swiper-container .swiper-button-next svg {
+    transform: translateX(20%);
+
+  }
+
+  .swiper-container .swiper-button-prev {
+    left: 350px;
+    height: 40px;
+    width: 40px;
+    border-radius: 50%;
+    background: #7E7E7E;
+
+    z-index: 1;
+
+  }
+
+  .swiper-container .swiper-button-next {
+    right: 350px;
+    height: 40px;
+    width: 40px;
+    border-radius: 50%;
+    background: #7E7E7E;
+    z-index: 1;
+  }
+
+  .swiper-button-prev:after,
+  .swiper-button-next:after {
+    display: none;
+  }
+
+  .swiper-container {
+    position: relative;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .swiper-wrapper {
+    max-width: 1568px;
+  }
+
+  .swiper-wrapper .swiper-slide {
+    box-sizing: border-box;
+    display: flex;
+    width: 374px !important;
+    padding: 28px 32px;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 38px;
+    align-self: stretch;
+    border-radius: 12px;
+    background: #191919;
+  }
+
+  .swiper-wrapper .swiper-slide-footer {
+    width: 100%;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 18px;
+  }
+
+  .swiper-wrapper .swiper-slide-footer h3 {
+    color: var(--Pure_White, #FFF);
+    font-family: "Replica Pro";
+    font-size: 20px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+    text-transform: uppercase;
+    margin: 0;
+  }
+
+  .swiper-wrapper .swiper-slide-footer .price {
+    color: var(--Text_white, rgba(255, 255, 255, 0.87));
+    font-family: "Replica Pro";
+    font-size: 20px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+  }
+
+  .swiper-wrapper .swiper-slide-footer .btn {
+    display: flex;
+    width: 310px;
+    height: 44px;
+    padding: 8px 24px;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    border-radius: 3px;
+    opacity: 0.95;
+    background: #C20123;
+    border: none;
+    color: white;
+    color: var(--Text_white, rgba(255, 255, 255, 0.87));
+    text-align: center;
+    font-family: "Replica Pro";
+    font-size: 20px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+    text-transform: capitalize;
+    cursor: pointer;
+  }
+
 }

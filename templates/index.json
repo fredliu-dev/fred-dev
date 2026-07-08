@@ -12,37 +12,17 @@
     "demo-icons": {
       "type": "demo-icons",
       "blocks": {
-        "slide_mzeY8e": {
+        "slide_wcBVyr": {
           "type": "slide",
           "settings": {
-            "image": "shopify://shop_images/image.png",
-            "link": "https://www.baidu.com"
-          }
-        },
-        "slide": {
-          "type": "slide",
-          "settings": {
-            "image": "shopify://shop_images/image.png",
-            "link": "shopify://collections/all"
+            "collection": "best-sellers"
           }
         }
       },
       "block_order": [
-        "slide_mzeY8e",
-        "slide"
+        "slide_wcBVyr"
       ],
-      "settings": {
-        "image_overlay_opacity": 40,
-        "image_height": "large",
-        "image_behavior": "none",
-        "desktop_content_position": "bottom-center",
-        "desktop_content_alignment": "center",
-        "show_text_box": false,
-        "color_scheme": "scheme-3",
-        "stack_images_on_mobile": false,
-        "mobile_content_alignment": "center",
-        "show_text_below": false
-      }
+      "settings": {}
     },
     "svg-list": {
       "type": "svg-list",
