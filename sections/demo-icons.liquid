@@ -65,6 +65,7 @@
                           {{ product.title | escape }}
                           {{ variant.title | escape }}
                         </h3>
+                        <div class="jdgm-widget jdgm-preview-badge" data-id="{{ product.id }}"></div>
                         <div class="price">
                           <div class="now-price">{{ variant.price | money }}</div>
                           {% if variant.compare_at_price > variant.price %}
@@ -96,6 +97,7 @@
                       <div class="discount-badge">{{ discount_percent }}% OFF</div>
                     {% endif %}
                     <h3>{{ product.title | escape }}</h3>
+                    <div class="jdgm-widget jdgm-preview-badge" data-id="{{ product.id }}"></div>
                     <div class="price">
                       <div class="now-price">{{ product.price | money }}</div>
                       {% if product.compare_at_price > product.price %}
