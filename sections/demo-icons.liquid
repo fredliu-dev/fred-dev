@@ -53,7 +53,12 @@
                       {% endif %}
                       <div class="swiper-slide-footer">
                         {% if variant.compare_at_price > variant.price %}
-                          {% assign discount_percent = variant.compare_at_price | minus: variant.price | times: 100.0 | divided_by: variant.compare_at_price | round: 0 %}
+                          {% assign discount_percent = variant.compare_at_price
+                            | minus: variant.price
+                            | times: 100.0
+                            | divided_by: variant.compare_at_price
+                            | round: 0
+                          %}
                           <div class="discount-badge">{{ discount_percent }}% OFF</div>
                         {% endif %}
                         <h3>
@@ -82,7 +87,12 @@
                   {% endif %}
                   <div class="swiper-slide-footer">
                     {% if product.compare_at_price > product.price %}
-                      {% assign discount_percent = product.compare_at_price | minus: product.price | times: 100.0 | divided_by: product.compare_at_price | round: 0 %}
+                      {% assign discount_percent = product.compare_at_price
+                        | minus: product.price
+                        | times: 100.0
+                        | divided_by: product.compare_at_price
+                        | round: 0
+                      %}
                       <div class="discount-badge">{{ discount_percent }}% OFF</div>
                     {% endif %}
                     <h3>{{ product.title | escape }}</h3>
@@ -134,6 +144,9 @@
     }
   ],
   "blocks": [
+    {
+      "type": "@app"
+    },
     {
       "type": "slide",
       "name": "Slide",
