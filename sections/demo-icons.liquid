@@ -4,29 +4,89 @@
 <script src="{{ 'section-demo-icons.js' | asset_url }}" defer></script>
 
 <div class="swiper-block">
+  <h2>{{ section.settings.title | escape }}</h2>
+  {% assign collections = section.settings.collection %}
+  <div class="tablist">
+    {% for collection in collections %}
+      <button
+        type="button"
+        class="tab-item{% if forloop.first %} is-active{% endif %}"
+        data-id="{{ collection.id }}"
+      >
+        {{ collection.title | escape }}
+      </button>
+    {% endfor %}
+  </div>
   {%- for block in section.blocks -%}
     {% assign products = block.settings.collection.products %}
-    {{ products | json }}
     {%- if block.type == 'slide' -%}
-      <div class="swiper-container">
-        <div class="swiper-wrapper">
-          {%- for product in products -%}
-            <div class="swiper-slide" id="{{ product.id }}">
-              {% if product.featured_image != blank %}
-                <img src="{{ product.featured_image | image_url }}" alt="" width="100" height="100" loading="lazy">
-              {% endif %}
-              <div class="swiper-slide-footer">
-                <h3>{{ product.title | escape }}</h3>
-                <div class="price">{{ product.price | money_with_currency }}</div>
-                <button class="btn">
-                  Add To Cart
-                  {% render 'icon-buy' %}
-                </button>
+      <div class="swiper-outer{% if forloop.first %} is-active{% endif %}">
+        <div
+          class="swiper-container"
+          data-id="{{ block.settings.collection.id }}"
+        >
+          <div class="swiper-wrapper">
+            {%- for product in products -%}
+              <div class="swiper-slide" id="{{ product.id }}">
+                {% if product.variants.size > 1 %}
+                  <div class="product-swatches">
+                    {% for variant in product.variants %}
+                      <button
+                        type="button"
+                        class="swatch{% if forloop.first %} is-active{% endif %}"
+                        data-id="{{ variant.id }}"
+                      ></button>
+                    {% endfor %}
+                  </div>
+                  {% for variant in product.variants %}
+                    <div class="swiper-body{% if forloop.first %} is-active{% endif %}" data-id="{{ variant.id }}">
+                      {% if variant.featured_image.src != blank %}
+                        <img
+                          src="{{ variant.featured_image.src | image_url }}"
+                          alt=""
+                          width="100"
+                          height="100"
+                          loading="lazy"
+                        >
+                      {% else %}
+                        {{ 'product-1' | placeholder_svg_tag: 'placeholder-svg' }}
+                      {% endif %}
+                      <div class="swiper-slide-footer">
+                        <h3>
+                          {{ product.title | escape }}
+                          {{ variant.title | escape }}
+                        </h3>
+                        <div class="price">
+                          <div class="now-price">{{ product.price | money }}</div>
+                          <div class="old-price">{{ product.compare_at_price | money }}</div>
+                        </div>
+                        <button class="btn">
+                          Add To Cart
+                          {% render 'icon-buy' %}
+                        </button>
+                      </div>
+                    </div>
+                  {% endfor %}
+                {% else %}
+                  {% if product.featured_image != blank %}
+                    <img src="{{ product.featured_image | image_url }}" alt="" width="100" height="100" loading="lazy">
+                  {% endif %}
+                  <div class="swiper-slide-footer">
+                    <h3>{{ product.title | escape }}</h3>
+                    <div class="price">
+                      <div class="now-price">{{ product.price | money }}</div>
+                      <div class="old-price">{{ product.compare_at_price | money }}</div>
+                    </div>
+                    <button class="btn">
+                      Add To Cart
+                      {% render 'icon-buy' %}
+                    </button>
+                  </div>
+                {% endif %}
               </div>
-            </div>
-          {%- endfor -%}
+            {%- endfor -%}
+          </div>
         </div>
-
         <div class="swiper-button-prev">{% render 'arrow-left' %}</div>
         <div class="swiper-button-next">{% render 'arrow-right' %}</div>
         <div class="swiper-pagination"></div>
@@ -37,12 +97,24 @@
 
 {% schema %}
 {
-  "name": "t:sections.image-banner.name",
+  "name": "demo-icons",
   "tag": "section",
   "class": "section",
   "disabled_on": {
     "groups": ["header", "footer"]
   },
+  "settings": [
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Title"
+    },
+    {
+      "type": "collection_list",
+      "id": "collection",
+      "label": "选择产品集"
+    }
+  ],
   "blocks": [
     {
       "type": "slide",

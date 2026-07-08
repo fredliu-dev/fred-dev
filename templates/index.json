@@ -17,12 +17,25 @@
           "settings": {
             "collection": "best-sellers"
           }
+        },
+        "slide_Kw7Te8": {
+          "type": "slide",
+          "settings": {
+            "collection": "best-sellers-copy"
+          }
         }
       },
       "block_order": [
-        "slide_wcBVyr"
+        "slide_wcBVyr",
+        "slide_Kw7Te8"
       ],
-      "settings": {}
+      "settings": {
+        "title": "Top Picks For you",
+        "collection": [
+          "best-sellers",
+          "best-sellers-copy"
+        ]
+      }
     },
     "svg-list": {
       "type": "svg-list",

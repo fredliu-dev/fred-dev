@@ -1,9 +1,12 @@
 .swiper-block {
   padding: 96px 80px;
+  gap: 45px;
   background-color: #000000;
   display: flex;
   align-items: center;
   justify-content: center;
+  flex-direction: column;
+  position: relative;
 }
 
 .swiper-container {
@@ -15,6 +18,7 @@
 }
 
 .swiper-wrapper .swiper-slide {
+  position: relative;
   display: flex;
   width: 374px;
   padding: 28px 32px;
@@ -28,7 +32,43 @@
   box-sizing: border-box;
 }
 
-.swiper-wrapper .swiper-slide img {
+.product-swatches {
+  position: absolute;
+  top: 28px;
+  right: 32px;
+  display: flex;
+  gap: 12px;
+  z-index: 2;
+}
+
+.swatch {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  cursor: pointer;
+  padding: 0;
+  transition: border-color 0.2s ease;
+  border: none;
+}
+
+.swatch:nth-child(1) {
+  background-color: #1E1F20;
+  box-shadow: 0 6px 6px 0 rgba(255, 255, 255, 0.40) inset;
+}
+
+.swatch:nth-child(2) {
+  background-color: white;
+  box-shadow: 0 6px 6px 0 rgba(0, 0, 0, 0.40) inset;
+}
+
+.swatch.is-active {
+  border: 2px solid #EA0029;
+  box-shadow: 0 0 10px 0 #EA0029;
+
+}
+
+.swiper-wrapper .swiper-slide img,
+.swiper-wrapper .swiper-slide .placeholder-svg {
   height: 300px;
   width: 300px;
 }
@@ -36,132 +76,227 @@
 
 
 @media screen and (min-width: 750px) {
-
-  .swiper-container .swiper-button-prev,
-  .swiper-container .swiper-button-next {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
-
-  .swiper-container .swiper-button-prev svg,
-  .swiper-container .swiper-button-next svg {
-    height: 18px;
-    width: 9px;
-  }
-
-  .swiper-container .swiper-button-prev svg {
-    transform: translateX(-20%);
-
-  }
-
-  .swiper-container .swiper-button-next svg {
-    transform: translateX(20%);
-
-  }
-
-  .swiper-container .swiper-button-prev {
-    left: 350px;
-    height: 40px;
-    width: 40px;
-    border-radius: 50%;
-    background: #7E7E7E;
-
-    z-index: 1;
-
-  }
-
-  .swiper-container .swiper-button-next {
-    right: 350px;
-    height: 40px;
-    width: 40px;
-    border-radius: 50%;
-    background: #7E7E7E;
-    z-index: 1;
-  }
-
-  .swiper-button-prev:after,
-  .swiper-button-next:after {
+  .swiper-body {
     display: none;
   }
 
-  .swiper-container {
-    position: relative;
-    width: 100%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+  .swiper-body.is-active {
+    display: block;
   }
+}
 
-  .swiper-wrapper {
-    max-width: 1568px;
-  }
+.tablist {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
 
-  .swiper-wrapper .swiper-slide {
-    box-sizing: border-box;
-    display: flex;
-    width: 374px !important;
-    padding: 28px 32px;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    gap: 38px;
-    align-self: stretch;
-    border-radius: 12px;
-    background: #191919;
-  }
+.tablist .tab-item.is-active {
+  background: #F6F6F6;
+  color: black;
+}
 
-  .swiper-wrapper .swiper-slide-footer {
-    width: 100%;
+.tablist .tab-item {
+  cursor: pointer;
+  display: flex;
+  padding: 10px 16px;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  border-radius: 60px;
+  background: var(--Dark_Grey, #2A2A2A);
+  color: white;
+  border: none;
+  color: var(--Pure_White, #FFF);
+  text-align: center;
+  font-family: "Replica Pro";
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 100%;
+  /* 16px */
+}
 
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    gap: 18px;
-  }
+.swiper-block h2 {
+  color: var(--Brand_Red, #EA0029);
+  text-align: center;
+  font-family: "Replica ProTT";
+  font-size: 40px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+  text-transform: capitalize;
+  margin: 0;
+}
 
-  .swiper-wrapper .swiper-slide-footer h3 {
-    color: var(--Pure_White, #FFF);
-    font-family: "Replica Pro";
-    font-size: 20px;
-    font-style: normal;
-    font-weight: 400;
-    line-height: normal;
-    text-transform: uppercase;
-    margin: 0;
-  }
+.swiper-block {
+  padding-bottom: 157px;
+}
 
-  .swiper-wrapper .swiper-slide-footer .price {
-    color: var(--Text_white, rgba(255, 255, 255, 0.87));
-    font-family: "Replica Pro";
-    font-size: 20px;
-    font-style: normal;
-    font-weight: 400;
-    line-height: normal;
-  }
+.swiper-pagination {
+  bottom: -45px !important;
+  transform: translateY(100%) !important;
+}
 
-  .swiper-wrapper .swiper-slide-footer .btn {
-    display: flex;
-    width: 310px;
-    height: 44px;
-    padding: 8px 24px;
-    justify-content: center;
-    align-items: center;
-    gap: 10px;
-    border-radius: 3px;
-    opacity: 0.95;
-    background: #C20123;
-    border: none;
-    color: white;
-    color: var(--Text_white, rgba(255, 255, 255, 0.87));
-    text-align: center;
-    font-family: "Replica Pro";
-    font-size: 20px;
-    font-style: normal;
-    font-weight: 400;
-    line-height: normal;
-    text-transform: capitalize;
-    cursor: pointer;
-  }
+.swiper-pagination-bullet {
+  height: 16px !important;
+  width: 16px !important;
+  border-radius: 50%;
+  background: #B7B7B7 !important;
+  border: 1.5px solid transparent;
+}
 
+.swiper-pagination-bullet-active {
+  background: white !important;
+  border: 1.5px solid #EA0029 !important;
+}
+
+.swiper-button-prev,
+.swiper-button-next {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+}
+
+.swiper-button-prev svg,
+.swiper-button-next svg {
+  height: 18px !important;
+  width: 9px !important;
+}
+
+.swiper-button-prev svg {
+  transform: translateX(-20%);
+
+}
+
+.swiper-button-next svg {
+  transform: translateX(20%);
+
+}
+
+.swiper-button-prev {
+  left: calc(((100% - 1568px) / 2) - 55px) !important;
+  height: 40px !important;
+  width: 40px !important;
+  bottom: 300px !important;
+  border-radius: 50%;
+  background: #7E7E7E;
+
+  z-index: 1;
+
+}
+
+.swiper-button-next {
+  right: calc(((100% - 1568px) / 2) - 55px) !important;
+  height: 40px !important;
+  width: 40px !important;
+  bottom: 300px !important;
+  border-radius: 50%;
+  background: #7E7E7E;
+  z-index: 1;
+}
+
+.swiper-button-prev:after,
+.swiper-button-next:after {
+  display: none !important;
+}
+
+.swiper-outer {
+  position: relative;
+  width: 100%;
+  display: none;
+  flex-direction: column;
+  align-items: center;
+}
+
+.swiper-outer.is-active {
+  display: flex;
+}
+
+.swiper-container {
+  position: relative;
+  max-width: 1568px;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  display: flex;
+}
+
+.swiper-wrapper {
+  max-width: 1568px;
+}
+
+.swiper-wrapper .swiper-slide {
+  box-sizing: border-box;
+  display: flex;
+  width: 374px !important;
+  padding: 28px 32px;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 38px;
+  align-self: stretch;
+  border-radius: 12px;
+  background: #191919;
+}
+
+.swiper-wrapper .swiper-slide-footer {
+  width: 100%;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 18px;
+}
+
+.swiper-wrapper .swiper-slide-footer h3 {
+  color: var(--Pure_White, #FFF);
+  font-family: "Replica Pro";
+  font-size: 20px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+  text-transform: uppercase;
+  margin: 0;
+}
+
+.swiper-wrapper .swiper-slide-footer .price {
+  color: var(--Text_white, rgba(255, 255, 255, 0.87));
+  font-family: "Replica Pro";
+  font-size: 20px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.swiper-wrapper .swiper-slide-footer .price .old-price {
+  color: var(--Dark_Text_Grey, #7E7E7E);
+  text-decoration: line-through;
+}
+
+.swiper-wrapper .swiper-slide-footer .btn {
+  display: flex;
+  width: 310px;
+  height: 44px;
+  padding: 8px 24px;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  border-radius: 3px;
+  opacity: 0.95;
+  background: #C20123;
+  border: none;
+  color: white;
+  color: var(--Text_white, rgba(255, 255, 255, 0.87));
+  text-align: center;
+  font-family: "Replica Pro";
+  font-size: 20px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+  text-transform: capitalize;
+  cursor: pointer;
 }
