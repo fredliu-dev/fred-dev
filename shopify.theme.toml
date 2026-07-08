@@ -1,0 +1,8 @@
+# 线上 https://shokz.com?preview_theme_id=141912899784
+
+# 2026 seal 新版
+[environments.dev]
+theme = "189764731168"
+store = "fred-dev-jn1kgwxa.myshopify.com"
+port = 9292
+

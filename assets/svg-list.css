@@ -1,0 +1,100 @@
+@font-face {
+    font-family: 'Replica-Bold';
+    src: url('Replica-Bold.ttf') format('truetype');
+    font-weight: 400;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Replica Pro';
+    src: url('ReplicaPro.woff') format('woff2');
+    font-weight: 400;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Replica ProTT';
+    src: url('Replica-ProTT-Heavy.woff') format('woff2');
+    font-weight: 400;
+    font-style: normal;
+    font-display: swap;
+}
+
+.svg-block {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    padding: 40px 0 80px 0;
+    gap: 45px;
+}
+
+.svg-block h2 {
+    color: #121212;
+    font-family: "Replica ProTT";
+    font-size: 40px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+    text-transform: capitalize;
+    margin: 0;
+}
+
+.svg-list {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 24px;
+}
+
+.svg-list-item {
+    display: flex;
+    width: 374px;
+    height: 304px;
+    padding: 44px 24px;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+    border-radius: 12px;
+    background: #FFF;
+    box-shadow: 0 3px 6px 0 rgba(7, 4, 146, 0.10), 0 36px 90px 0 rgba(6, 47, 125, 0.05), 0 18px 36px 0 rgba(27, 59, 119, 0.05);
+}
+
+.svg-list-item img {
+    height: 48px;
+    width: 48px;
+}
+
+.svg-list-item h3,
+.svg-list-item p {
+    margin: 0;
+}
+
+.svg-list-item h3 {
+    color: var(--Google_Black, #121212);
+    text-align: center;
+    font-family: Replica-Bold;
+    font-size: 24px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+}
+
+
+.svg-list-item p {
+    color: var(--Dark_Text_Grey, #7E7E7E);
+    text-align: center;
+    font-family: "Replica Pro";
+    font-size: 20px;
+    font-style: normal;
+    font-weight: 400;
+    -webkit-line-clamp: 2;
+    line-height: normal;
+    letter-spacing: -0.05px;
+    /* word-break: break-all; */
+    word-wrap: nowrap;
+}

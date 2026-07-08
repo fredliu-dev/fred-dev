@@ -9,62 +9,112 @@
  */
 {
   "sections": {
-    "image_banner": {
-      "type": "image-banner",
+    "demo-icons": {
+      "type": "demo-icons",
       "blocks": {
-        "heading": {
-          "type": "heading",
+        "slide_mzeY8e": {
+          "type": "slide",
           "settings": {
-            "heading": "Browse our latest products",
-            "heading_size": "h0"
+            "image": "shopify://shop_images/image.png",
+            "link": "https://www.baidu.com"
           }
         },
-        "button": {
-          "type": "buttons",
+        "slide": {
+          "type": "slide",
           "settings": {
-            "button_label_1": "Shop all",
-            "button_link_1": "shopify://collections/all",
-            "button_style_secondary_1": true,
-            "button_label_2": "",
-            "button_link_2": "",
-            "button_style_secondary_2": false
+            "image": "shopify://shop_images/image.png",
+            "link": "shopify://collections/all"
           }
         }
       },
       "block_order": [
-        "heading",
-        "button"
+        "slide_mzeY8e",
+        "slide"
       ],
       "settings": {
         "image_overlay_opacity": 40,
         "image_height": "large",
-        "desktop_content_position": "bottom-center",
-        "show_text_box": false,
         "image_behavior": "none",
+        "desktop_content_position": "bottom-center",
         "desktop_content_alignment": "center",
+        "show_text_box": false,
         "color_scheme": "scheme-3",
-        "mobile_content_alignment": "center",
         "stack_images_on_mobile": false,
+        "mobile_content_alignment": "center",
         "show_text_below": false
       }
+    },
+    "svg-list": {
+      "type": "svg-list",
+      "blocks": {
+        "title_UWzmRw": {
+          "type": "title",
+          "settings": {
+            "title": "Why choose redragon"
+          }
+        },
+        "svg-item": {
+          "type": "svg-item",
+          "settings": {
+            "image": "shopify://shop_images/icon1.svg",
+            "title": "Free U.S.",
+            "title2": "Standard Shipping",
+            "description": "Reliable standard shipping to the U.S. only. Track your parcel at any time."
+          }
+        },
+        "svg_item_KrDA9f": {
+          "type": "svg-item",
+          "settings": {
+            "image": "shopify://shop_images/icon2.svg",
+            "title": "30-Day",
+            "title2": "Return Policy",
+            "description": "Return your order within 30 days. No questions asked."
+          }
+        },
+        "svg_item_pKAYhF": {
+          "type": "svg-item",
+          "settings": {
+            "image": "shopify://shop_images/icon3.svg",
+            "title": "2-Year",
+            "title2": "Limited Warranty",
+            "description": "Your purchased products will have a 2-year warranty period."
+          }
+        },
+        "svg_item_6fAGUi": {
+          "type": "svg-item",
+          "settings": {
+            "image": "shopify://shop_images/icon4.svg",
+            "title": "Enjoy Your",
+            "title2": "Redragon's Perks",
+            "description": "Join Redragon Reward Program and enjoy exclusive deals and rewards"
+          }
+        }
+      },
+      "block_order": [
+        "title_UWzmRw",
+        "svg-item",
+        "svg_item_KrDA9f",
+        "svg_item_pKAYhF",
+        "svg_item_6fAGUi"
+      ],
+      "settings": {}
     },
     "featured_collection": {
       "type": "featured-collection",
       "settings": {
+        "collection": "all",
+        "products_to_show": 8,
         "title": "Featured products",
         "heading_size": "h2",
         "description": "",
         "show_description": false,
         "description_style": "body",
-        "collection": "all",
-        "products_to_show": 8,
         "columns_desktop": 4,
-        "color_scheme": "scheme-1",
+        "enable_desktop_slider": false,
         "full_width": false,
         "show_view_all": true,
         "view_all_style": "solid",
-        "enable_desktop_slider": false,
-        "swipe_on_mobile": false,
+        "color_scheme": "scheme-1",
         "image_ratio": "adapt",
         "image_shape": "default",
         "show_secondary_image": true,
@@ -72,13 +122,15 @@
         "show_rating": false,
         "quick_add": "none",
         "columns_mobile": "2",
+        "swipe_on_mobile": false,
         "padding_top": 44,
         "padding_bottom": 36
       }
     }
   },
   "order": [
-    "image_banner",
+    "demo-icons",
+    "svg-list",
     "featured_collection"
   ]
 }
