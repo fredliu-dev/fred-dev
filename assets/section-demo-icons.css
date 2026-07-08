@@ -249,6 +249,24 @@
   gap: 18px;
 }
 
+.swiper-wrapper .swiper-slide-footer .discount-badge {
+  display: inline-flex;
+  padding: 4px 8px;
+  justify-content: center;
+  align-items: center;
+  gap: 4px;
+  border-radius: 4px;
+  border: 1px solid var(--Brand_Red, #EA0029);
+  color: var(--Brand_Red, #EA0029);
+  font-family: "Replica Pro";
+  font-size: 12px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 100%;
+  text-transform: uppercase;
+  width: fit-content;
+}
+
 .swiper-wrapper .swiper-slide-footer h3 {
   color: var(--Pure_White, #FFF);
   font-family: "Replica Pro";

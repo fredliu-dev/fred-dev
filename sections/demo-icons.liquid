@@ -52,18 +52,27 @@
                         {{ 'product-1' | placeholder_svg_tag: 'placeholder-svg' }}
                       {% endif %}
                       <div class="swiper-slide-footer">
+                        {% if variant.compare_at_price > variant.price %}
+                          {% assign discount_percent = variant.compare_at_price | minus: variant.price | times: 100.0 | divided_by: variant.compare_at_price | round: 0 %}
+                          <div class="discount-badge">{{ discount_percent }}% OFF</div>
+                        {% endif %}
                         <h3>
                           {{ product.title | escape }}
                           {{ variant.title | escape }}
                         </h3>
                         <div class="price">
-                          <div class="now-price">{{ product.price | money }}</div>
-                          <div class="old-price">{{ product.compare_at_price | money }}</div>
+                          <div class="now-price">{{ variant.price | money }}</div>
+                          {% if variant.compare_at_price > variant.price %}
+                            <div class="old-price">{{ variant.compare_at_price | money }}</div>
+                          {% endif %}
                         </div>
-                        <button class="btn">
-                          Add To Cart
-                          {% render 'icon-buy' %}
-                        </button>
+                        <form method="post" action="{{ routes.cart_add_url }}">
+                          <input type="hidden" name="id" value="{{ variant.id }}">
+                          <button type="submit" class="btn">
+                            Add To Cart
+                            {% render 'icon-buy' %}
+                          </button>
+                        </form>
                       </div>
                     </div>
                   {% endfor %}
@@ -72,15 +81,24 @@
                     <img src="{{ product.featured_image | image_url }}" alt="" width="100" height="100" loading="lazy">
                   {% endif %}
                   <div class="swiper-slide-footer">
+                    {% if product.compare_at_price > product.price %}
+                      {% assign discount_percent = product.compare_at_price | minus: product.price | times: 100.0 | divided_by: product.compare_at_price | round: 0 %}
+                      <div class="discount-badge">{{ discount_percent }}% OFF</div>
+                    {% endif %}
                     <h3>{{ product.title | escape }}</h3>
                     <div class="price">
                       <div class="now-price">{{ product.price | money }}</div>
-                      <div class="old-price">{{ product.compare_at_price | money }}</div>
+                      {% if product.compare_at_price > product.price %}
+                        <div class="old-price">{{ product.compare_at_price | money }}</div>
+                      {% endif %}
                     </div>
-                    <button class="btn">
-                      Add To Cart
-                      {% render 'icon-buy' %}
-                    </button>
+                    <form method="post" action="{{ routes.cart_add_url }}">
+                      <input type="hidden" name="id" value="{{ product.selected_or_first_available_variant.id }}">
+                      <button type="submit" class="btn">
+                        Add To Cart
+                        {% render 'icon-buy' %}
+                      </button>
+                    </form>
                   </div>
                 {% endif %}
               </div>
