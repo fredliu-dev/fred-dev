@@ -92,54 +92,32 @@
       ],
       "settings": {}
     },
-    "featured_collection": {
-      "type": "featured-collection",
-      "settings": {
-        "collection": "all",
-        "products_to_show": 8,
-        "title": "Featured products",
-        "heading_size": "h2",
-        "description": "",
-        "show_description": false,
-        "description_style": "body",
-        "columns_desktop": 4,
-        "enable_desktop_slider": false,
-        "full_width": false,
-        "show_view_all": true,
-        "view_all_style": "solid",
-        "color_scheme": "scheme-1",
-        "image_ratio": "adapt",
-        "image_shape": "default",
-        "show_secondary_image": true,
-        "show_vendor": false,
-        "show_rating": false,
-        "quick_add": "none",
-        "columns_mobile": "2",
-        "swipe_on_mobile": false,
-        "padding_top": 44,
-        "padding_bottom": 36
-      }
-    },
-    "1783496804ccbcd055": {
-      "type": "apps",
+    "vido-list": {
+      "type": "video-list",
       "blocks": {
-        "judge_me_reviews_preview_badge_KMBkx4": {
-          "type": "shopify://apps/judge-me-reviews/blocks/preview_badge/61ccd3b1-a9f2-4160-9fe9-4fec8413e5d8",
-          "settings": {}
+        "video_item_7DkdCa": {
+          "type": "video-item",
+          "settings": {
+            "video": "shopify://files/videos/光厂_2361513_简介大气十秒倒计时.mp4"
+          }
+        },
+        "video_item_DmG79m": {
+          "type": "video-item",
+          "settings": {
+            "video": "shopify://files/videos/光厂_6815862_一个古董钟聚焦于秒针倒数十秒.mp4"
+          }
         }
       },
       "block_order": [
-        "judge_me_reviews_preview_badge_KMBkx4"
+        "video_item_7DkdCa",
+        "video_item_DmG79m"
       ],
-      "settings": {
-        "include_margins": true
-      }
+      "settings": {}
     }
   },
   "order": [
     "demo-icons",
     "svg-list",
-    "featured_collection",
-    "1783496804ccbcd055"
+    "vido-list"
   ]
 }

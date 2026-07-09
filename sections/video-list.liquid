@@ -1,0 +1,94 @@
+{{ 'video-list.css' | asset_url | stylesheet_tag }}
+{{ 'https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css' | stylesheet_tag }}
+{{ 'https://cdn.vidstack.io/player.css' | stylesheet_tag }}
+<script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js" defer></script>
+<script src="{{ 'video-list.js' | asset_url }}" defer></script>
+<script src="https://cdn.vidstack.io/player.core" type="module" defer></script>
+{%- style -%}
+  #Banner-{{ section.id }} {
+    background-color: #000000;
+  }
+{%- endstyle -%}
+
+<div
+  id="Banner-{{ section.id }}"
+  class="video-list-section{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--fade-in{% endif %}"
+>
+  <div class="video-list-container">
+    <div class="swiper video-list-swiper">
+      <div class="swiper-wrapper">
+        {%- for block in section.blocks -%}
+          {%- if block.type == 'video-item' and block.settings.video != blank -%}
+            {%- assign video = block.settings.video -%}
+            {%- assign poster = video.preview_image -%}
+            <div class="swiper-slide video-list-slide" {{ block.shopify_attributes }}>
+              <div class="video-list-thumbnail">
+                {%- if poster != blank -%}
+                  {{
+                    poster
+                    | image_url: width: 800
+                    | image_tag: widths: '375, 550, 750, 1100', sizes: '(min-width: 750px) 25vw, 50vw', alt: video.alt
+                    | default: 'Video thumbnail', loading: 'lazy'
+                  }}
+                {%- else -%}
+                  {{ 'hero-apparel-3' | placeholder_svg_tag: 'placeholder-svg video-list-placeholder' }}
+                {%- endif -%}
+                <span class="video-list-play">
+                  <span class="svg-wrapper">
+                    {{- 'icon-play.svg' | inline_asset_content -}}
+                  </span>
+                </span>
+              </div>
+            </div>
+          {%- endif -%}
+        {%- endfor -%}
+      </div>
+    </div>
+  </div>
+  <div class="video-list-modal">
+    <div class="video-list-modal-content">
+      <div class="video-list-modal-close"></div>
+      <media-player
+        id="VideoPlayer-{{ section.id }}"
+        class="VideoPlayer"
+        src="https://files.vidstack.io/sprite-fight/720p.mp4"
+      >
+        <media-provider></media-provider>
+      </media-player>
+    </div>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "video-block",
+  "tag": "section",
+  "class": "section",
+  "disabled_on": {
+    "groups": ["header", "footer"]
+  },
+  "blocks": [
+    {
+      "type": "video-item",
+      "name": "video",
+      "settings": [
+        {
+          "type": "video",
+          "id": "video",
+          "label": "A Shopify-hosted video"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "video-block",
+      "blocks": [
+        {
+          "type": "video-item"
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

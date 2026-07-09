@@ -227,8 +227,15 @@ product-info {
 
 .product__info-container .product-form,
 .product__info-container .product__description,
+.product__info-container .product__extra-description,
 .product__info-container .icon-with-text {
   margin: 2.5rem 0;
+}
+
+.product__extra-description {
+  padding: 1.6rem;
+  background: #f5f5f5;
+  border-radius: 0.8rem;
 }
 
 .product__text {
