@@ -29,15 +29,6 @@
             {%- for product in products -%}
               <div class="swiper-slide" id="{{ product.id }}">
                 {% if product.variants.size > 1 %}
-                  <div class="product-swatches">
-                    {% for variant in product.variants %}
-                      <button
-                        type="button"
-                        class="swatch{% if forloop.first %} is-active{% endif %}"
-                        data-id="{{ variant.id }}"
-                      ></button>
-                    {% endfor %}
-                  </div>
                   {% for variant in product.variants %}
                     <div class="swiper-body{% if forloop.first %} is-active{% endif %}" data-id="{{ variant.id }}">
                       {% if variant.featured_image.src != blank %}
@@ -66,6 +57,15 @@
                           {{ variant.title | escape }}
                         </h3>
                         <div class="jdgm-widget jdgm-preview-badge" data-id="{{ product.id }}"></div>
+                        <div class="product-swatches">
+                          {% for variant in product.variants %}
+                            <button
+                              type="button"
+                              class="swatch{% if forloop.first %} is-active{% endif %}"
+                              data-id="{{ variant.id }}"
+                            ></button>
+                          {% endfor %}
+                        </div>
                         <div class="price">
                           <div class="now-price">{{ variant.price | money }}</div>
                           {% if variant.compare_at_price > variant.price %}
