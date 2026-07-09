@@ -87,4 +87,35 @@ window.addEventListener('DOMContentLoaded', function () {
       });
     });
   });
+  document.querySelectorAll('.js-product-form').forEach((form) => {
+    form.addEventListener('submit', async (event) => {
+      event.preventDefault();
+
+      const cartDrawer = document.querySelector('cart-drawer');
+
+      if (!cartDrawer) {
+        form.submit(); // 没有抽屉就正常跳转
+        return;
+      }
+
+      const idInput = form.querySelector('input[name="id"]');
+      const quantityInput = form.querySelector('input[name="quantity"]');
+      const body = JSON.stringify({
+        id: idInput ? idInput.value : '',
+        quantity: quantityInput ? parseInt(quantityInput.value, 10) || 1 : 1,
+        sections: 'cart-drawer,cart-icon-bubble',
+        sections_url: window.location.pathname,
+      });
+
+      const response = await fetch('/cart/add.js', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: body,
+      });
+      const parsedState = await response.json();
+      cartDrawer.renderContents(parsedState);
+    });
+  });
 });

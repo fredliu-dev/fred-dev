@@ -74,7 +74,7 @@
                             <div class="old-price">{{ variant.compare_at_price | money }}</div>
                           {% endif %}
                         </div>
-                        <form method="post" action="{{ routes.cart_add_url }}">
+                        <form method="post" class="js-product-form" action="{{ routes.cart_add_url }}">
                           <input type="hidden" name="id" value="{{ variant.id }}">
                           <button type="submit" class="btn">
                             Add To Cart
@@ -114,7 +114,7 @@
                         <div class="old-price">{{ product.compare_at_price | money }}</div>
                       {% endif %}
                     </div>
-                    <form method="post" action="{{ routes.cart_add_url }}">
+                    <form method="post" class="js-product-form" action="{{ routes.cart_add_url }}">
                       <input type="hidden" name="id" value="{{ product.selected_or_first_available_variant.id }}">
                       <button type="submit" class="btn">
                         Add To Cart
