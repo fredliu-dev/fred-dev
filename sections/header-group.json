@@ -13,15 +13,35 @@
   "sections": {
     "header": {
       "type": "header",
+      "blocks": {
+        "mega_ad_tBNmBF": {
+          "type": "mega_ad",
+          "settings": {
+            "image": "shopify://shop_images/Frame_1255.png",
+            "link": "shopify://collections"
+          }
+        },
+        "mega_ad_fjCLEm": {
+          "type": "mega_ad",
+          "settings": {
+            "image": "shopify://shop_images/Poster.png",
+            "link": "shopify://collections/all"
+          }
+        }
+      },
+      "block_order": [
+        "mega_ad_tBNmBF",
+        "mega_ad_fjCLEm"
+      ],
       "settings": {
-        "logo_position": "middle-left",
-        "mobile_logo_position": "center",
-        "menu": "",
-        "menu_type_desktop": "dropdown",
+        "logo_position": "top-left",
+        "mobile_logo_position": "left",
+        "menu": "menulist",
+        "menu_type_desktop": "mega",
         "sticky_header_type": "always",
         "show_line_separator": true,
         "color_scheme": "scheme-4",
-        "menu_color_scheme": "scheme-1",
+        "menu_color_scheme": "scheme-4",
         "enable_country_selector": true,
         "enable_language_selector": true,
         "enable_customer_avatar": true,
