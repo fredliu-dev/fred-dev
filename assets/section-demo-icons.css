@@ -74,7 +74,9 @@
   width: 300px;
 }
 
-
+.swiper-body {
+  align-items: center;
+}
 
 @media screen and (min-width: 750px) {
   .swiper-body {
