@@ -1,9 +1,10 @@
 {{ 'video-list.css' | asset_url | stylesheet_tag }}
 {{ 'https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css' | stylesheet_tag }}
-{{ 'https://cdn.vidstack.io/player.css' | stylesheet_tag }}
+{{ 'https://cdn.vidstack.io/player/theme.css' | stylesheet_tag }}
+{{ 'https://cdn.vidstack.io/player/video.css' | stylesheet_tag }}
+<script src="https://cdn.vidstack.io/player" type="module" defer></script>
 <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js" defer></script>
 <script src="{{ 'video-list.js' | asset_url }}" defer></script>
-<script src="https://cdn.vidstack.io/player.core" type="module" defer></script>
 {%- style -%}
   #Banner-{{ section.id }} {
     background-color: #000000;
@@ -22,7 +23,11 @@
             {%- assign video = block.settings.video -%}
             {%- assign poster = video.preview_image -%}
             <div class="swiper-slide video-list-slide" {{ block.shopify_attributes }}>
-              <div class="video-list-thumbnail">
+              <div
+                class="video-list-thumbnail"
+                data-videosrc="{{ video.sources.first.url }}"
+                data-poster-src="{{ poster | image_url: width: 800 }}"
+              >
                 {%- if poster != blank -%}
                   {{
                     poster
@@ -34,9 +39,7 @@
                   {{ 'hero-apparel-3' | placeholder_svg_tag: 'placeholder-svg video-list-placeholder' }}
                 {%- endif -%}
                 <span class="video-list-play">
-                  <span class="svg-wrapper">
-                    {{- 'icon-play.svg' | inline_asset_content -}}
-                  </span>
+                  {{- 'icon-play.svg' | inline_asset_content -}}
                 </span>
               </div>
             </div>
@@ -47,13 +50,18 @@
   </div>
   <div class="video-list-modal">
     <div class="video-list-modal-content">
-      <div class="video-list-modal-close"></div>
+      <div class="video-list-modal-close">
+        {{- 'icon-close.svg' | inline_asset_content -}}
+      </div>
       <media-player
-        id="VideoPlayer-{{ section.id }}"
-        class="VideoPlayer"
-        src="https://files.vidstack.io/sprite-fight/720p.mp4"
+        id="VideoListPlayer"
+        src="{{ section.blocks.first.settings.video.url }}"
+        playsinline
+        poster="{{ section.blocks.first.settings.video.preview_image | image_url: width: 800 }}"
+        class="video-list-player"
       >
         <media-provider></media-provider>
+        <media-video-layout></media-video-layout>
       </media-player>
     </div>
   </div>

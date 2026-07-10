@@ -141,6 +141,7 @@
 .swiper-pagination {
   bottom: -45px !important;
   transform: translateY(100%) !important;
+  z-index: 1 !important;
 }
 
 .swiper-pagination-bullet {
