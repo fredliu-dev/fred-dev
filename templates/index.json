@@ -95,7 +95,37 @@
     "vido-list": {
       "type": "video-list",
       "blocks": {
-        "video_item_7DkdCa": {
+        "video_item_8ajfrQ": {
+          "type": "video-item",
+          "settings": {
+            "video": "shopify://files/videos/光厂_6815862_一个古董钟聚焦于秒针倒数十秒.mp4"
+          }
+        },
+        "video_item_EdFNhh": {
+          "type": "video-item",
+          "settings": {
+            "video": "shopify://files/videos/光厂_2361513_简介大气十秒倒计时.mp4"
+          }
+        },
+        "video_item_EUdnkA": {
+          "type": "video-item",
+          "settings": {
+            "video": "shopify://files/videos/光厂_6815862_一个古董钟聚焦于秒针倒数十秒.mp4"
+          }
+        },
+        "video_item_fdApVJ": {
+          "type": "video-item",
+          "settings": {
+            "video": "shopify://files/videos/光厂_2361513_简介大气十秒倒计时.mp4"
+          }
+        },
+        "video_item_tTAQwN": {
+          "type": "video-item",
+          "settings": {
+            "video": "shopify://files/videos/光厂_6815862_一个古董钟聚焦于秒针倒数十秒.mp4"
+          }
+        },
+        "video_item_QGwpHf": {
           "type": "video-item",
           "settings": {
             "video": "shopify://files/videos/光厂_2361513_简介大气十秒倒计时.mp4"
@@ -106,11 +136,23 @@
           "settings": {
             "video": "shopify://files/videos/光厂_6815862_一个古董钟聚焦于秒针倒数十秒.mp4"
           }
+        },
+        "video_item_7DkdCa": {
+          "type": "video-item",
+          "settings": {
+            "video": "shopify://files/videos/光厂_2361513_简介大气十秒倒计时.mp4"
+          }
         }
       },
       "block_order": [
-        "video_item_7DkdCa",
-        "video_item_DmG79m"
+        "video_item_8ajfrQ",
+        "video_item_EdFNhh",
+        "video_item_EUdnkA",
+        "video_item_fdApVJ",
+        "video_item_tTAQwN",
+        "video_item_QGwpHf",
+        "video_item_DmG79m",
+        "video_item_7DkdCa"
       ],
       "settings": {}
     }

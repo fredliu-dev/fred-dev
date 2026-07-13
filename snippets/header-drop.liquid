@@ -5,7 +5,11 @@
   {% render 'header-drop' %}
 {% endcomment %}
 
-<header-drawer data-breakpoint="{% if section.settings.menu_type_desktop == 'drawer' %}desktop{% else %}tablet{% endif %}">
+<header-drop
+  class="header-drop"
+  data-breakpoint="{% if section.settings.menu_type_desktop == 'drawer' %}desktop{% else %}tablet{% endif %}"
+  style="grid-area:icons;"
+>
   <details id="Details-menu-drop-container" class="menu-drop-container">
     <summary
       class="header__icon header__icon--menu header__icon--summary link focus-inset"
@@ -41,56 +45,85 @@
                         class="menu-drop__submenu gradient motion-reduce"
                         hidden
                       >
-                        <ul class="menu-drop__menu menu-drop__menu--sub list-menu" role="list">
+                        {%- assign first_child = link.links | first -%}
+                        {%- assign has_images = false -%}
+                        {%- if first_child.object.image.src != blank -%}
+                          {%- assign has_images = true -%}
+                        {%- endif -%}
+                        <ul
+                          class="menu-drop__menu menu-drop__menu--sub list-menu{% if has_images %} menu-drop__menu--grid{% endif %}"
+                          role="list"
+                        >
                           {%- for childlink in link.links -%}
-                            <li class="menu-drop__item">
-                              {%- if childlink.links == blank -%}
+                            <li class="menu-drop__item{% if has_images %} menu-drop__item--grid{% endif %}">
+                              {%- if has_images -%}
                                 <a
                                   id="HeaderDrop-{{ link.handle }}-{{ childlink.handle }}"
                                   href="{{ childlink.url }}"
-                                  class="menu-drop__menu-item menu-drop__menu-item--child link link--text list-menu__item focus-inset{% if childlink.current %} menu-drop__menu-item--active{% endif %}"
+                                  class="menu-drop__menu-item menu-drop__menu-item--grid link link--text focus-inset{% if childlink.current %} menu-drop__menu-item--active{% endif %}"
                                   {% if childlink.current %}
                                     aria-current="page"
                                   {% endif %}
                                 >
-                                  {{ childlink.title | escape }}
+                                  <img
+                                    src="{{ childlink.object.image.src | img_url: 'medium' }}"
+                                    alt="{{ childlink.title | escape }}"
+                                    class="menu-drop__grid-image lazyload"
+                                    loading="lazy"
+                                    height="56"
+                                    width="56"
+                                  >
+                                  <span class="menu-drop__grid-title">{{ childlink.title | escape }}</span>
                                 </a>
                               {%- else -%}
-                                <div class="menu-drop__dropdown menu-drop__dropdown--nested" data-menu-drop-dropdown>
-                                  <button
+                                {%- if childlink.links == blank -%}
+                                  <a
                                     id="HeaderDrop-{{ link.handle }}-{{ childlink.handle }}"
-                                    class="menu-drop__menu-item menu-drop__menu-item--child link link--text list-menu__item focus-inset"
-                                    aria-expanded="false"
-                                    aria-controls="HeaderDrop-submenu-{{ link.handle }}-{{ childlink.handle }}"
+                                    href="{{ childlink.url }}"
+                                    class="menu-drop__menu-item menu-drop__menu-item--child link link--text list-menu__item focus-inset{% if childlink.current %} menu-drop__menu-item--active{% endif %}"
+                                    {% if childlink.current %}
+                                      aria-current="page"
+                                    {% endif %}
                                   >
                                     {{ childlink.title | escape }}
-                                    <span class="svg-wrapper menu-drop__arrow">
-                                      {{- 'icon-caret.svg' | inline_asset_content -}}
-                                    </span>
-                                  </button>
-                                  <div
-                                    id="HeaderDrop-submenu-{{ link.handle }}-{{ childlink.handle }}"
-                                    class="menu-drop__submenu menu-drop__submenu--nested gradient motion-reduce"
-                                    hidden
-                                  >
-                                    <ul class="menu-drop__menu menu-drop__menu--sub list-menu" role="list">
-                                      {%- for grandchildlink in childlink.links -%}
-                                        <li class="menu-drop__item">
-                                          <a
-                                            id="HeaderDrop-{{ link.handle }}-{{ childlink.handle }}-{{ grandchildlink.handle }}"
-                                            href="{{ grandchildlink.url }}"
-                                            class="menu-drop__menu-item menu-drop__menu-item--grandchild link link--text list-menu__item focus-inset{% if grandchildlink.current %} menu-drop__menu-item--active{% endif %}"
-                                            {% if grandchildlink.current %}
-                                              aria-current="page"
-                                            {% endif %}
-                                          >
-                                            {{ grandchildlink.title | escape }}
-                                          </a>
-                                        </li>
-                                      {%- endfor -%}
-                                    </ul>
+                                  </a>
+                                {%- else -%}
+                                  <div class="menu-drop__dropdown menu-drop__dropdown--nested" data-menu-drop-dropdown>
+                                    <button
+                                      id="HeaderDrop-{{ link.handle }}-{{ childlink.handle }}"
+                                      class="menu-drop__menu-item menu-drop__menu-item--child link link--text list-menu__item focus-inset"
+                                      aria-expanded="false"
+                                      aria-controls="HeaderDrop-submenu-{{ link.handle }}-{{ childlink.handle }}"
+                                    >
+                                      {{ childlink.title | escape }}
+                                      <span class="svg-wrapper menu-drop__arrow">
+                                        {{- 'icon-caret.svg' | inline_asset_content -}}
+                                      </span>
+                                    </button>
+                                    <div
+                                      id="HeaderDrop-submenu-{{ link.handle }}-{{ childlink.handle }}"
+                                      class="menu-drop__submenu menu-drop__submenu--nested gradient motion-reduce"
+                                      hidden
+                                    >
+                                      <ul class="menu-drop__menu menu-drop__menu--sub list-menu" role="list">
+                                        {%- for grandchildlink in childlink.links -%}
+                                          <li class="menu-drop__item">
+                                            <a
+                                              id="HeaderDrop-{{ link.handle }}-{{ childlink.handle }}-{{ grandchildlink.handle }}"
+                                              href="{{ grandchildlink.url }}"
+                                              class="menu-drop__menu-item menu-drop__menu-item--grandchild link link--text list-menu__item focus-inset{% if grandchildlink.current %} menu-drop__menu-item--active{% endif %}"
+                                              {% if grandchildlink.current %}
+                                                aria-current="page"
+                                              {% endif %}
+                                            >
+                                              {{ grandchildlink.title | escape }}
+                                            </a>
+                                          </li>
+                                        {%- endfor -%}
+                                      </ul>
+                                    </div>
                                   </div>
-                                </div>
+                                {%- endif -%}
                               {%- endif -%}
                             </li>
                           {%- endfor -%}
@@ -270,13 +303,12 @@
       </div>
     </div>
   </details>
-</header-drawer>
+</header-drop>
 
 <style>
   .menu-drop-container {
     display: flex;
   }
-
   .menu-drop {
     position: absolute;
     transform: translateX(-100%);
@@ -322,7 +354,6 @@
   }
 
   .menu-drop__navigation {
-    padding: 3rem 0;
   }
 
   .menu-drop__menu {
@@ -412,6 +443,52 @@
     font-size: 1.5rem;
   }
 
+  /* 图片网格布局 */
+  .menu-drop__menu--grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    padding: 1rem 30px;
+  }
+
+  .menu-drop__item--grid {
+    border-bottom: none;
+  }
+  .menu-drop__item--grid img {
+    margin-top: 8px;
+  }
+  .menu-drop__menu-item--grid {
+    flex-direction: column;
+    padding: 0;
+    text-align: center;
+    background: none;
+    border: none;
+    justify-content: flex-start;
+    padding: 16px 0;
+    border-bottom: 0.1rem solid rgba(var(--color-foreground), 0.08);
+  }
+  .menu-drop__item--grid:nth-last-child(-n + 4) .menu-drop__menu-item--grid {
+    border: none;
+  }
+
+  .menu-drop__menu-item--grid .menu-drop__grid-image {
+    width: 56px;
+    height: 56px;
+    object-fit: contain;
+    margin: 0;
+    margin-bottom: 0.5rem;
+  }
+
+  .menu-drop__menu-item--grid .menu-drop__grid-title {
+    color: var(--Dark_Text_Grey, #7e7e7e);
+    text-align: center;
+    font-family: 'Replica Pro';
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+    text-transform: capitalize;
+  }
+
   .menu-drop__utility-links {
     padding: 0;
     background-color: rgba(var(--color-foreground), 0.03);
@@ -473,10 +550,53 @@
 
 <script>
   (function () {
-    const drawer = document.querySelector('header-drawer');
+    const drawer = document.querySelector('header-drop');
     if (!drawer) return;
 
     const details = drawer.querySelector('details');
+    const summary = drawer.querySelector('summary');
+
+    // 处理抽屉展开/收起，实现与 menu-drawer 相同的动画行为
+    function openDrawer() {
+      details.setAttribute('open', '');
+      requestAnimationFrame(() => {
+        details.classList.add('menu-opening');
+      });
+      summary.setAttribute('aria-expanded', 'true');
+      document.body.classList.add(`overflow-hidden-${drawer.dataset.breakpoint}`);
+    }
+
+    function closeDrawer() {
+      details.classList.remove('menu-opening');
+      document.body.classList.remove(`overflow-hidden-${drawer.dataset.breakpoint}`);
+      setTimeout(() => {
+        details.removeAttribute('open');
+      }, 300);
+      summary.setAttribute('aria-expanded', 'false');
+    }
+
+    summary.addEventListener('click', (event) => {
+      event.preventDefault();
+      if (details.hasAttribute('open')) {
+        closeDrawer();
+      } else {
+        openDrawer();
+      }
+    });
+
+    // PC 端时自动关闭抽屉
+    window.addEventListener('resize', () => {
+      if (details.hasAttribute('open') && window.matchMedia('(min-width: 990px)').matches) {
+        closeDrawer();
+      }
+    });
+
+    // 点击遮罩/外部关闭抽屉
+    summary.addEventListener('click', (event) => {
+      if (event.target === summary && details.hasAttribute('open')) {
+        closeDrawer();
+      }
+    });
 
     drawer.querySelectorAll('[data-menu-drop-dropdown]').forEach((dropdown) => {
       const button = dropdown.querySelector('.menu-drop__menu-item');
