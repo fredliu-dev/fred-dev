@@ -1,8 +1,7 @@
 {{ 'video-list.css' | asset_url | stylesheet_tag }}
 {{ 'https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css' | stylesheet_tag }}
-{{ 'https://cdn.vidstack.io/player/theme.css' | stylesheet_tag }}
-{{ 'https://cdn.vidstack.io/player/video.css' | stylesheet_tag }}
-<script src="https://cdn.vidstack.io/player" type="module" defer></script>
+{{ 'https://cdn.plyr.io/3.8.4/plyr.css' | stylesheet_tag }}
+<script src="https://cdn.plyr.io/3.8.4/plyr.polyfilled.js" defer></script>
 <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js" defer></script>
 <script src="{{ 'video-list.js' | asset_url }}" defer></script>
 {%- style -%}
@@ -19,21 +18,24 @@
     <div class="swiper video-list-swiper">
       <div class="swiper-wrapper">
         {%- for block in section.blocks -%}
-          {%- if block.type == 'video-item' and block.settings.video != blank -%}
-            {%- assign video = block.settings.video -%}
-            {%- assign poster = video.preview_image -%}
+          {%- if block.type == 'video-item' and block.settings.video_url != blank -%}
+            {%- assign video_url = block.settings.video_url -%}
+            {%- assign poster = block.settings.poster -%}
             <div class="swiper-slide video-list-slide" {{ block.shopify_attributes }}>
               <div
                 class="video-list-thumbnail"
-                data-videosrc="{{ video.sources.first.url }}"
+                data-videosrc="{{ video_url | escape }}"
                 data-poster-src="{{ poster | image_url: width: 800 }}"
               >
                 {%- if poster != blank -%}
                   {{
                     poster
                     | image_url: width: 800
-                    | image_tag: widths: '375, 550, 750, 1100', sizes: '(min-width: 750px) 25vw, 50vw', alt: video.alt
-                    | default: 'Video thumbnail', loading: 'lazy'
+                    | image_tag:
+                      widths: '375, 550, 750, 1100',
+                      sizes: '(min-width: 750px) 25vw, 50vw',
+                      alt: block.settings.title,
+                      loading: 'lazy'
                   }}
                 {%- else -%}
                   {{ 'hero-apparel-3' | placeholder_svg_tag: 'placeholder-svg video-list-placeholder' }}
@@ -46,6 +48,7 @@
           {%- endif -%}
         {%- endfor -%}
       </div>
+      <div class="video-list-mask"></div>
     </div>
   </div>
   <div class="video-list-modal">
@@ -53,16 +56,15 @@
       <div class="video-list-modal-close">
         {{- 'icon-close.svg' | inline_asset_content -}}
       </div>
-      <media-player
+      <video
         id="VideoListPlayer"
-        src="{{ section.blocks.first.settings.video.url }}"
+        class="video-list-player plyr"
         playsinline
-        poster="{{ section.blocks.first.settings.video.preview_image | image_url: width: 800 }}"
-        class="video-list-player"
+        controls
+        data-poster="{{ section.blocks.first.settings.video.preview_image | image_url: width: 800 }}"
       >
-        <media-provider></media-provider>
-        <media-video-layout></media-video-layout>
-      </media-player>
+        <source src="{{ section.blocks.first.settings.video.url }}" type="video/mp4">
+      </video>
     </div>
   </div>
 </div>
@@ -81,9 +83,15 @@
       "name": "video",
       "settings": [
         {
-          "type": "video",
-          "id": "video",
-          "label": "A Shopify-hosted video"
+          "type": "url",
+          "id": "video_url",
+          "label": "Video URL",
+          "info": "Paste an MP4, YouTube, or Vimeo link"
+        },
+        {
+          "type": "image_picker",
+          "id": "poster",
+          "label": "Poster Image"
         }
       ]
     }

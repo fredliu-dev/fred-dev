@@ -61,22 +61,24 @@
         {%- break -%}
       {%- endif -%}
     {%- endfor -%}
-    <div class="svg-list">
-      {%- for item in section.blocks -%}
-        {% case item.type %}
-          {% when 'svg-item' %}
-            <div class="svg-list-item">
-              {%- if item.settings.image != blank -%}
-                <img src="{{ item.settings.image | image_url }}" alt="" width="100" height="100" loading="lazy">
-              {%- endif -%}
-              <div class="svg-list-item-title-group">
-                <h3 class="svg-list-item-title">{{ item.settings.title | escape }}</h3>
-                <h3 class="svg-list-item-title">{{ item.settings.title2 | escape }}</h3>
+    <div class="svg-list-container">
+      <div class="svg-list">
+        {%- for item in section.blocks -%}
+          {% case item.type %}
+            {% when 'svg-item' %}
+              <div class="svg-list-item">
+                {%- if item.settings.image != blank -%}
+                  <img src="{{ item.settings.image | image_url }}" alt="" width="100" height="100" loading="lazy">
+                {%- endif -%}
+                <div class="svg-list-item-title-group">
+                  <h3 class="svg-list-item-title">{{ item.settings.title | escape }}</h3>
+                  <h3 class="svg-list-item-title">{{ item.settings.title2 | escape }}</h3>
+                </div>
+                <p class="svg-list-item-description">{{ item.settings.description | escape }}</p>
               </div>
-              <p class="svg-list-item-description">{{ item.settings.description | escape }}</p>
-            </div>
-        {% endcase %}
-      {%- endfor -%}
+          {% endcase %}
+        {%- endfor -%}
+      </div>
     </div>
   </div>
 </div>

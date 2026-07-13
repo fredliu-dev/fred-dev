@@ -1,0 +1,145 @@
+<div class="nav-bar color-{{ section.settings.color_scheme }} gradient">
+  {% assign setting = section.settings %}
+  {% assign blocks = section.blocks %}
+  {% for block in blocks %}
+    {% if block.type == 'title' %}
+      <h2>{{ product.title }}</h2>
+    {% endif %}
+  {% endfor %}
+  <nav class="nav-bar-menu">
+    {% for block in blocks %}
+      {% if block.type == 'nav-bar-item' %}
+        {% assign item = block.settings %}
+        {% assign text = item.text %}
+        {% assign target_id = item.target_id %}
+        <a href="{{ target_id }}" data-target="{{ target_id }}">{{ text }}</a>
+      {% endif %}
+    {% endfor %}
+  </nav>
+</div>
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    var section = document.querySelector('.nav-bar');
+    if (!section) return;
+    var links = section.querySelectorAll('.nav-bar-menu a[data-target]');
+    if (links.length === 0) return;
+
+    var activeLink = null;
+
+    var observer = new IntersectionObserver(
+      function (entries) {
+        entries.forEach(function (entry) {
+          if (entry.isIntersecting) {
+            var id = '#' + entry.target.id;
+            links.forEach(function (link) {
+              if (link.dataset.target === id) {
+                if (activeLink) activeLink.classList.remove('active');
+                link.classList.add('active');
+                activeLink = link;
+              }
+            });
+          }
+        });
+      },
+      { rootMargin: '-50% 0px -50% 0px', threshold: 0 }
+    );
+
+    links.forEach(function (link) {
+      var target = document.querySelector(link.dataset.target);
+      if (target) observer.observe(target);
+    });
+  });
+</script>
+<style>
+  .nav-bar {
+    background: rgb(var(--color-background));
+    color: rgb(var(--color-foreground));
+    display: grid;
+    grid-template-columns: 2fr 4fr 2fr;
+    grid-template-areas: 'icon nav-bar-item button';
+    align-items: center;
+    justify-content: center;
+    padding: 16px 80px;
+  }
+
+  .nav-bar h2 {
+    grid-area: icon;
+    margin: 0;
+    color: var(--Pure_White, #fff);
+    font-family: Replica-Bold;
+    font-size: 24px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+  }
+
+  .nav-bar-menu {
+    grid-area: nav-bar-item;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 24px;
+  }
+
+  .nav-bar-menu a {
+    display: inline-block;
+    text-decoration: none;
+    color: inherit;
+    outline: none;
+    color: var(--Text_white, rgba(255, 255, 255, 0.87));
+    font-family: 'Replica Pro';
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+  .nav-bar-menu a.active {
+    color: var(--Text_White, #fff);
+    font-weight: 700;
+    border-bottom: 2px solid currentColor;
+  }
+</style>
+{% schema %}
+{
+  "name": "Nav Bar",
+  "tag": "section",
+  "class": "section",
+  "blocks": [
+    {
+      "type": "title",
+      "name": "t:sections.main-product.blocks.title.name",
+      "limit": 1
+    },
+    {
+      "type": "nav-bar-item",
+      "name": "Nav Bar Item",
+      "settings": [
+        {
+          "type": "text",
+          "label": "Text",
+          "id": "text",
+          "default": "Nav Bar Item"
+        },
+        {
+          "type": "text",
+          "label": "TargetId",
+          "id": "target_id",
+          "default": "#section-id"
+        }
+      ]
+    }
+  ],
+  "settings": [
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "Color scheme",
+      "default": "scheme-4"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Nav Bar"
+    }
+  ]
+}
+{% endschema %}

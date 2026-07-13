@@ -531,6 +531,9 @@
   }
 
   @media screen and (min-width: 750px) {
+    .header-drop {
+      display: none;
+    }
     .menu-drop {
       width: 40rem;
       border-width: 0 var(--drawer-border-width) 0 0;
@@ -540,6 +543,9 @@
   }
 
   @media screen and (max-width: 749px) {
+    .header-drop {
+      display: block;
+    }
     .menu-drop.country-selector-open {
       transform: none !important;
       filter: none !important;

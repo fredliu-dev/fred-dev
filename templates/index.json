@@ -40,6 +40,22 @@
     "svg-list": {
       "type": "svg-list",
       "blocks": {
+        "svg_item_ELdQNR": {
+          "type": "svg-item",
+          "settings": {
+            "title": "",
+            "title2": "",
+            "description": ""
+          }
+        },
+        "svg_item_UUzKtQ": {
+          "type": "svg-item",
+          "settings": {
+            "title": "111",
+            "title2": "222",
+            "description": "333"
+          }
+        },
         "title_UWzmRw": {
           "type": "title",
           "settings": {
@@ -84,6 +100,8 @@
         }
       },
       "block_order": [
+        "svg_item_ELdQNR",
+        "svg_item_UUzKtQ",
         "title_UWzmRw",
         "svg-item",
         "svg_item_KrDA9f",
@@ -98,49 +116,43 @@
         "video_item_8ajfrQ": {
           "type": "video-item",
           "settings": {
-            "video": "shopify://files/videos/光厂_6815862_一个古董钟聚焦于秒针倒数十秒.mp4"
+            "video_url": "https://youtu.be/HziZwL3QcfE?si=CX4RV4DZWU40iryy",
+            "poster": "shopify://shop_images/Bitmap.png"
           }
         },
         "video_item_EdFNhh": {
           "type": "video-item",
           "settings": {
-            "video": "shopify://files/videos/光厂_2361513_简介大气十秒倒计时.mp4"
+            "video_url": "https://youtu.be/Pr7FcbtRhbk?si=DLxc_AK0bvYfDq8N",
+            "poster": "shopify://shop_images/Bitmap2.png"
           }
         },
         "video_item_EUdnkA": {
           "type": "video-item",
           "settings": {
-            "video": "shopify://files/videos/光厂_6815862_一个古董钟聚焦于秒针倒数十秒.mp4"
+            "video_url": "https://youtu.be/nszchmr9DFw?si=FmKMKu4m2SBWom6z",
+            "poster": "shopify://shop_images/Bitmap3.png"
           }
         },
         "video_item_fdApVJ": {
           "type": "video-item",
           "settings": {
-            "video": "shopify://files/videos/光厂_2361513_简介大气十秒倒计时.mp4"
+            "video_url": "https://youtube.com/shorts/iptZeLf5t7c?si=JiCUu8DNnEgienX9",
+            "poster": "shopify://shop_images/Bitmap5.png"
           }
         },
         "video_item_tTAQwN": {
           "type": "video-item",
           "settings": {
-            "video": "shopify://files/videos/光厂_6815862_一个古董钟聚焦于秒针倒数十秒.mp4"
+            "video_url": "https://youtube.com/shorts/OqIyk3Ca2gM?si=73xB8EB7u7bozQja",
+            "poster": "shopify://shop_images/Bitmap4.png"
           }
         },
         "video_item_QGwpHf": {
           "type": "video-item",
           "settings": {
-            "video": "shopify://files/videos/光厂_2361513_简介大气十秒倒计时.mp4"
-          }
-        },
-        "video_item_DmG79m": {
-          "type": "video-item",
-          "settings": {
-            "video": "shopify://files/videos/光厂_6815862_一个古董钟聚焦于秒针倒数十秒.mp4"
-          }
-        },
-        "video_item_7DkdCa": {
-          "type": "video-item",
-          "settings": {
-            "video": "shopify://files/videos/光厂_2361513_简介大气十秒倒计时.mp4"
+            "video_url": "https://youtu.be/1K-fnvxfR7g?si=WI52C1xErcBJB2tE",
+            "poster": "shopify://shop_images/Bitmap6.png"
           }
         }
       },
@@ -150,9 +162,7 @@
         "video_item_EUdnkA",
         "video_item_fdApVJ",
         "video_item_tTAQwN",
-        "video_item_QGwpHf",
-        "video_item_DmG79m",
-        "video_item_7DkdCa"
+        "video_item_QGwpHf"
       ],
       "settings": {}
     }

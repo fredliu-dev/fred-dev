@@ -12,16 +12,16 @@
     "main": {
       "type": "main-product",
       "blocks": {
+        "title": {
+          "type": "title",
+          "settings": {}
+        },
         "vendor": {
           "type": "text",
           "settings": {
             "text": "{{ product.vendor }}",
             "text_style": "uppercase"
           }
-        },
-        "title": {
-          "type": "title",
-          "settings": {}
         },
         "price": {
           "type": "price",
@@ -57,8 +57,8 @@
         }
       },
       "block_order": [
-        "vendor",
         "title",
+        "vendor",
         "price",
         "variant_picker",
         "quantity_selector",
@@ -68,7 +68,7 @@
       ],
       "settings": {
         "enable_sticky_info": true,
-        "color_scheme": "scheme-1",
+        "color_scheme": "scheme-4",
         "media_size": "large",
         "constrain_to_viewport": true,
         "media_fit": "contain",
@@ -82,22 +82,62 @@
         "padding_bottom": 12
       }
     },
-    "disclosures": {
-      "type": "disclosures",
+    "nav-bar": {
+      "type": "nav-bar",
+      "blocks": {
+        "title_cjNVYL": {
+          "type": "title",
+          "settings": {}
+        },
+        "nav_bar_item_nJgrdq": {
+          "type": "nav-bar-item",
+          "settings": {
+            "text": "Reviews",
+            "target_id": "#reviews"
+          }
+        },
+        "nav_bar_item_efV7Wz": {
+          "type": "nav-bar-item",
+          "settings": {
+            "text": "Softwares Download",
+            "target_id": "#softwares-download"
+          }
+        },
+        "nav_bar_item_3D7tAE": {
+          "type": "nav-bar-item",
+          "settings": {
+            "text": "Specifications",
+            "target_id": "#specifications"
+          }
+        },
+        "nav_bar_item_czDpxY": {
+          "type": "nav-bar-item",
+          "settings": {
+            "text": "Overview",
+            "target_id": "#overview"
+          }
+        }
+      },
+      "block_order": [
+        "title_cjNVYL",
+        "nav_bar_item_nJgrdq",
+        "nav_bar_item_efV7Wz",
+        "nav_bar_item_3D7tAE",
+        "nav_bar_item_czDpxY"
+      ],
       "settings": {
-        "padding_top": 36,
-        "padding_bottom": 0
+        "color_scheme": "scheme-3"
       }
     },
     "related-products": {
       "type": "related-products",
       "settings": {
         "heading": "You may also like",
-        "heading_size": "h2",
-        "products_to_show": 4,
-        "columns_desktop": 4,
+        "heading_size": "h1",
+        "products_to_show": 10,
+        "columns_desktop": 6,
         "columns_mobile": "2",
-        "color_scheme": "scheme-1",
+        "color_scheme": "scheme-4",
         "image_ratio": "square",
         "image_shape": "default",
         "show_secondary_image": true,
@@ -110,7 +150,7 @@
   },
   "order": [
     "main",
-    "disclosures",
+    "nav-bar",
     "related-products"
   ]
 }

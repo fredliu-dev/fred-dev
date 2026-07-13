@@ -30,6 +30,7 @@
     flex-direction: column;
     overflow: visible;
     padding-top: 24px;
+    overflow: hidden;
 }
 
 .svg-block h2 {
@@ -43,8 +44,19 @@
     text-transform: capitalize;
 }
 
-.svg-list {
+.svg-list-container {
     width: 100%;
+    height: 100%;
+    overflow-x: auto;
+    overflow-y: auto;
+}
+
+.svg-list-container::-webkit-scrollbar {
+    display: none;
+}
+
+.svg-list {
+    width: max-content;
     display: flex;
     align-items: stretch;
     justify-content: flex-start;

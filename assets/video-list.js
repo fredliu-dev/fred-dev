@@ -1,4 +1,4 @@
-window.addEventListener('DOMContentLoaded', function () {
+window.addEventListener('load', function () {
   var section = document.querySelector('.video-list-section');
   if (!section) return;
 
@@ -29,32 +29,53 @@ window.addEventListener('DOMContentLoaded', function () {
   }
 
   var modal = section.querySelector('.video-list-modal');
-  var player = section.querySelector('#VideoListPlayer');
+  var videoEl = section.querySelector('#VideoListPlayer');
   var modalClose = section.querySelector('.video-list-modal-close');
 
-  if (!modal || !player) return;
+  if (!modal || !videoEl) return;
+
+  var player = new Plyr(videoEl, {
+    controls: ['play-large', 'play', 'progress', 'current-time', 'mute', 'volume', 'fullscreen']
+  });
+
+  function getYouTubeId(url) {
+    var regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=|shorts\/)([^#\&\?]*).*/;
+    var match = url.match(regExp);
+    return match && match[2].length === 11 ? match[2] : null;
+  }
 
   section.querySelectorAll('.video-list-thumbnail').forEach((thumb) => {
     thumb.addEventListener('click', () => {
       var videoSrc = thumb.dataset.videosrc;
       var posterSrc = thumb.dataset.posterSrc;
-      console.log(videoSrc);
       if (videoSrc) {
-        player.setAttribute('src', videoSrc);
+        var videoId = getYouTubeId(videoSrc);
+        if (videoId) {
+          player.source = {
+            type: 'video',
+            sources: [
+              {
+                src: videoId,
+                provider: 'youtube'
+              }
+            ],
+            poster: posterSrc || ''
+          };
+        } else {
+          player.source = {
+            type: 'video',
+            sources: [
+              {
+                src: videoSrc,
+                type: 'video/mp4'
+              }
+            ],
+            poster: posterSrc || ''
+          };
+        }
       }
-      if (posterSrc) {
-        player.setAttribute('poster', posterSrc);
-      }
-
       modal.classList.add('is-open');
-
-      player.play().catch(() => {
-        var canPlayHandler = function () {
-          player.play().catch(() => { });
-          player.removeEventListener('can-play', canPlayHandler);
-        };
-        player.addEventListener('can-play', canPlayHandler);
-      });
+      player.play().catch(() => { });
     });
   });
 
