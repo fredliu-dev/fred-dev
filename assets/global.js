@@ -67,7 +67,37 @@ class HTMLUpdateUtility {
     });
   }
 }
+document.querySelectorAll('.js-product-form').forEach((form) => {
+  form.addEventListener('submit', async (event) => {
+    event.preventDefault();
 
+    const cartDrawer = document.querySelector('cart-drawer');
+
+    if (!cartDrawer) {
+      form.submit(); // 没有抽屉就正常跳转
+      return;
+    }
+
+    const idInput = form.querySelector('input[name="id"]');
+    const quantityInput = form.querySelector('input[name="quantity"]');
+    const body = JSON.stringify({
+      id: idInput ? idInput.value : '',
+      quantity: quantityInput ? parseInt(quantityInput.value, 10) || 1 : 1,
+      sections: 'cart-drawer,cart-icon-bubble',
+      sections_url: window.location.pathname,
+    });
+
+    const response = await fetch('/cart/add.js', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: body,
+    });
+    const parsedState = await response.json();
+    cartDrawer.renderContents(parsedState);
+  });
+});
 document.querySelectorAll('[id^="Details-"] summary').forEach((summary) => {
   summary.setAttribute('role', 'button');
   summary.setAttribute('aria-expanded', summary.parentNode.hasAttribute('open'));
@@ -1051,7 +1081,7 @@ class SlideshowComponent extends SliderComponent {
     const slideScrollPosition =
       this.slider.scrollLeft +
       this.sliderFirstItemNode.clientWidth *
-        (this.sliderControlLinksArray.indexOf(event.currentTarget) + 1 - this.currentPage);
+      (this.sliderControlLinksArray.indexOf(event.currentTarget) + 1 - this.currentPage);
     this.slider.scrollTo({
       left: slideScrollPosition,
     });

@@ -89,41 +89,93 @@
           "type": "title",
           "settings": {}
         },
-        "nav_bar_item_nJgrdq": {
+        "nav_bar_item_czDpxY": {
           "type": "nav-bar-item",
           "settings": {
-            "text": "Reviews",
-            "target_id": "#reviews"
+            "text": "Overview",
+            "target_id": "overview"
           }
         },
         "nav_bar_item_efV7Wz": {
           "type": "nav-bar-item",
           "settings": {
             "text": "Softwares Download",
-            "target_id": "#softwares-download"
+            "target_id": "softwares-download"
           }
         },
         "nav_bar_item_3D7tAE": {
           "type": "nav-bar-item",
           "settings": {
             "text": "Specifications",
-            "target_id": "#specifications"
+            "target_id": "specifications"
           }
         },
-        "nav_bar_item_czDpxY": {
+        "nav_bar_item_nJgrdq": {
           "type": "nav-bar-item",
           "settings": {
-            "text": "Overview",
-            "target_id": "#overview"
+            "text": "Reviews",
+            "target_id": "reviews"
+          }
+        },
+        "nav_bar_block_KhDpim": {
+          "type": "nav-bar-block",
+          "settings": {
+            "color_scheme": "",
+            "image": "shopify://shop_images/Bitmap2.png",
+            "title": "",
+            "content": "",
+            "target_id": "overview"
+          }
+        },
+        "nav_bar_block_K3AbDM": {
+          "type": "nav-bar-block",
+          "settings": {
+            "color_scheme": "scheme-4",
+            "image": "shopify://shop_images/redragon_m913_mouse_2_1.png",
+            "title": "WIRELESS/WIRED, 2 ROADS TO WIN",
+            "content": "BOOM! Dual modes of 2.4Ghz wireless and USB-C wired mode assemble with 12 side buttons MMO gaming mouse feature. Wireless/wired mode plus easy-access keybinding shortcuts maximize your damage.",
+            "target_id": "section-id"
+          }
+        },
+        "nav_bar_block_MEHgQr": {
+          "type": "nav-bar-block",
+          "settings": {
+            "color_scheme": "scheme-4",
+            "image": "shopify://shop_images/redragon_m913_mouse_2_2.png",
+            "title": "LIGHTNING-FAST IS NOT JUST SAYING",
+            "content": "Waterproof Surface, Anti-slip Rubber Base. Waterproof coating prevents damage from spilled drinks or other accidents. Heavy duty anti-slip rubber backing keeps it secure in one place.",
+            "target_id": "section-id"
+          }
+        },
+        "collapsible_imgg3a": {
+          "type": "collapsible",
+          "settings": {
+            "title": "Product Features",
+            "image": "shopify://shop_images/01-03-BK_c082bb50-fb49-4d5b-bc2b-cbef98d3818f.png",
+            "content": "",
+            "target_id": "specifications"
+          }
+        },
+        "collapsible_6MaCin": {
+          "type": "collapsible",
+          "settings": {
+            "title": "Softwares Download",
+            "content": "<ul><li>1</li><li>2</li><li>3</li></ul>",
+            "target_id": "softwares-download"
           }
         }
       },
       "block_order": [
         "title_cjNVYL",
-        "nav_bar_item_nJgrdq",
+        "nav_bar_item_czDpxY",
         "nav_bar_item_efV7Wz",
         "nav_bar_item_3D7tAE",
-        "nav_bar_item_czDpxY"
+        "nav_bar_item_nJgrdq",
+        "nav_bar_block_KhDpim",
+        "nav_bar_block_K3AbDM",
+        "nav_bar_block_MEHgQr",
+        "collapsible_imgg3a",
+        "collapsible_6MaCin"
       ],
       "settings": {
         "color_scheme": "scheme-3"
@@ -146,11 +198,39 @@
         "padding_top": 36,
         "padding_bottom": 28
       }
+    },
+    "demo-icons": {
+      "type": "demo-icons",
+      "blocks": {
+        "slide_wcBVyr": {
+          "type": "slide",
+          "settings": {
+            "collection": "best-sellers"
+          }
+        },
+        "slide_Kw7Te8": {
+          "type": "slide",
+          "settings": {
+            "collection": "best-sellers-copy"
+          }
+        }
+      },
+      "block_order": [
+        "slide_wcBVyr",
+        "slide_Kw7Te8"
+      ],
+      "settings": {
+        "title": "You May Be Interested",
+        "collection": [
+          "best-sellers"
+        ]
+      }
     }
   },
   "order": [
     "main",
     "nav-bar",
-    "related-products"
+    "related-products",
+    "demo-icons"
   ]
 }

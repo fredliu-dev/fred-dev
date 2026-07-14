@@ -1,36 +1,86 @@
-<div class="nav-bar color-{{ section.settings.color_scheme }} gradient">
+{{ 'component-collapsible.css' | asset_url | stylesheet_tag }}
+<script src="{{ 'component-collapsible.js' | asset_url }}" defer></script>
+<div class="nav-container">
   {% assign setting = section.settings %}
   {% assign blocks = section.blocks %}
-  {% for block in blocks %}
-    {% if block.type == 'title' %}
-      <h2>{{ product.title }}</h2>
-    {% endif %}
-  {% endfor %}
-  <nav class="nav-bar-menu">
+  <div class="nav-bar color-{{ setting.color_scheme }} gradient">
     {% for block in blocks %}
-      {% if block.type == 'nav-bar-item' %}
-        {% assign item = block.settings %}
-        {% assign text = item.text %}
-        {% assign target_id = item.target_id %}
-        <a href="{{ target_id }}" data-target="{{ target_id }}">{{ text }}</a>
+      {% if block.type == 'title' %}
+        <h2>{{ product.title }}</h2>
       {% endif %}
     {% endfor %}
-  </nav>
+    <nav class="nav-bar-menu">
+      {% for block in blocks %}
+        {% if block.type == 'nav-bar-item' %}
+          {% assign item = block.settings %}
+          {% assign text = item.text %}
+          {% assign target_id = item.target_id %}
+          <a href="#{{ target_id }}" data-target="{{ target_id }}">{{ text }}</a>
+        {% endif %}
+      {% endfor %}
+    </nav>
+    <div class="button-list">
+      <form method="post" class="js-product-form" action="{{ routes.cart_add_url }}">
+        <input type="hidden" name="id" value="{{ product.selected_or_first_available_variant.id }}">
+        <button type="submit" class="add-to-cart">Add To Cart</button>
+      </form>
+      <button class="buy-now">Buy Now</button>
+    </div>
+  </div>
+
+  <div
+    class="nav-body color-{{ setting.color_scheme }}"
+  >
+    {% for block in blocks %}
+      {% assign item = block.settings %}
+      {% assign title = item.title %}
+      {% assign content = item.content %}
+      {% assign target_id = item.target_id %}
+      {% if block.type == 'nav-bar-block' %}
+        {% if title != '' and content != '' %}
+          <div id="{{ target_id }}" class="nav-body-item-both">
+            <div class="left">
+              {% render 'image', image: item.image %}
+            </div>
+            <div class="right">
+              <h2>{{ title }}</h2>
+              <p>{{ content }}</p>
+            </div>
+          </div>
+        {% else %}
+          <div id="{{ target_id }}" class="nav-body-item">
+            {% render 'image', image: item.image %}
+          </div>
+        {% endif %}
+      {% endif %}
+    {% endfor %}
+    <div class="nav-body-item-collapsible">
+      {% for block in blocks %}
+        {% assign item = block.settings %}
+        {% assign title = item.title %}
+        {% assign content = item.content %}
+        {% assign target_id = item.target_id %}
+        {% if block.type == 'collapsible' %}
+          {% render 'collapsible', title: title, content: content, id: target_id, image: item.image %}
+        {% endif %}
+      {% endfor %}
+    </div>
+  </div>
 </div>
+
 <script>
   document.addEventListener('DOMContentLoaded', function () {
-    var section = document.querySelector('.nav-bar');
-    if (!section) return;
-    var links = section.querySelectorAll('.nav-bar-menu a[data-target]');
-    if (links.length === 0) return;
+    var container = document.querySelector('.nav-container');
+    if (!container) return;
+    var navBar = container.querySelector('.nav-bar');
+    var links = navBar ? navBar.querySelectorAll('.nav-bar-menu a[data-target]') : [];
 
     var activeLink = null;
-
     var observer = new IntersectionObserver(
       function (entries) {
         entries.forEach(function (entry) {
           if (entry.isIntersecting) {
-            var id = '#' + entry.target.id;
+            var id = entry.target.id;
             links.forEach(function (link) {
               if (link.dataset.target === id) {
                 if (activeLink) activeLink.classList.remove('active');
@@ -41,17 +91,174 @@
           }
         });
       },
-      { rootMargin: '-50% 0px -50% 0px', threshold: 0 }
+      { rootMargin: '-10% 0px -10% 0px', threshold: 0 }
     );
-
     links.forEach(function (link) {
-      var target = document.querySelector(link.dataset.target);
+      var target = document.querySelector('#' + link.dataset.target);
+      link.addEventListener('click', function (e) {
+        e.preventDefault();
+        if (target) {
+          var navBarEl = document.querySelector('.nav-bar');
+          var offset = navBarEl ? navBarEl.offsetHeight : 0;
+          var top = target.getBoundingClientRect().top + window.scrollY - offset;
+          window.scrollTo({ top: top, behavior: 'smooth' });
+        }
+      });
+
       if (target) observer.observe(target);
     });
+    const buyNowBtn = document.querySelector('.buy-now');
+    buyNowBtn.addEventListener('click', function () {
+      var target = document.querySelector('product-info');
+      if (!target) return;
+      var navBarEl = document.querySelector('sticky-header');
+      var offset = navBarEl ? navBarEl.offsetHeight : 0;
+      var top = target.getBoundingClientRect().top + window.scrollY - offset;
+      window.scrollTo({ top: top, behavior: 'smooth' });
+    });
+    var header = document.querySelector('.section-header');
+    var navBar = document.querySelector('.nav-bar');
+
+    if (header && navBar) {
+      var headerObserver = new MutationObserver(function (mutations) {
+        if (
+          header.classList.contains('shopify-section-header-sticky') &&
+          !header.classList.contains('shopify-section-header-hidden')
+        ) {
+          navBar.style.top = 'var(--header-height)';
+        } else {
+          navBar.style.top = '0';
+        }
+      });
+
+      headerObserver.observe(header, {
+        attributes: true,
+        attributeFilter: ['class'],
+      });
+    }
   });
 </script>
+
 <style>
+  .nav-body-item-collapsible {
+    width: 100%;
+    padding: 80px 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    gap: 24px;
+  }
+  .nav-body .collapsible {
+    width: 60%;
+    padding: 8px 24px;
+    border-radius: 6px;
+    background: var(--Dark_Grey, #2a2a2a);
+  }
+  .button-list {
+    display: flex;
+    gap: 32px;
+    align-items: center;
+    justify-content: flex-end;
+  }
+  .add-to-cart {
+    display: flex;
+    width: 112px;
+    padding: 14px 4px;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    align-self: stretch;
+    border-radius: 12px;
+    border: 1px solid var(--Text_white, rgba(255, 255, 255, 0.87));
+    background: transparent;
+    color: var(--Text_white, rgba(255, 255, 255, 0.87));
+    cursor: pointer;
+  }
+  .buy-now {
+    display: flex;
+    width: 112px;
+    padding: 14px 4px;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    align-self: stretch;
+    border-radius: 8px;
+    background: var(--Pure_White, #fff);
+    cursor: pointer;
+  }
+  .nav-body-item-both:nth-child(even) {
+    flex-direction: row;
+  }
+  .nav-body-item-both:nth-child(odd) {
+    flex-direction: row-reverse;
+  }
+  .nav-body-item-both:nth-child(even) .right {
+    padding: 0 208px 0 64px;
+  }
+  .nav-body-item-both:nth-child(odd) .right {
+    padding: 0 64px 0 208px;
+  }
+  .nav-body-item-both .left,
+  .nav-body-item-both .right {
+    flex: 1;
+    max-width: 50%;
+  }
+  .nav-body-item-both .right {
+    display: flex;
+    flex-direction: column;
+    justify-items: center;
+    justify-content: center;
+    gap: 24px;
+    box-sizing: border-box;
+  }
+  .nav-body-item-both .right h2 {
+    text-align: center;
+    color: var(--Pure_White, #fff);
+    font-family: 'Replica ProTT';
+    font-size: 24px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+    margin: 0;
+  }
+  .nav-body-item-both .right p {
+    text-align: center;
+    color: var(--Text_white, rgba(255, 255, 255, 0.87));
+    font-family: 'Replica Pro';
+    font-size: 20px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 150%; /* 30px */
+  }
+  .nav-body-item-both {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 24px;
+  }
+  .nav-body {
+    background: black;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+  }
+  .nav-body img {
+    width: 100%;
+    object-fit: cover;
+    height: auto !important;
+  }
+  .nav-body-item {
+    gap: 24px;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
   .nav-bar {
+    position: sticky;
+    top: 0;
     background: rgb(var(--color-background));
     color: rgb(var(--color-foreground));
     display: grid;
@@ -60,6 +267,7 @@
     align-items: center;
     justify-content: center;
     padding: 16px 80px;
+    transition: all 0.1s ease;
   }
 
   .nav-bar h2 {
@@ -92,12 +300,24 @@
     font-style: normal;
     font-weight: 400;
     line-height: normal;
+  }
+
   .nav-bar-menu a.active {
-    color: var(--Text_White, #fff);
-    font-weight: 700;
-    border-bottom: 2px solid currentColor;
+    color: var(--Pure_White, #fff);
+    font-family: Replica-Bold;
+    font-size: 20px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+    text-decoration-line: underline;
+    text-decoration-style: solid;
+    text-decoration-skip-ink: none;
+    text-decoration-thickness: auto;
+    text-underline-offset: auto;
+    text-underline-position: from-font;
   }
 </style>
+
 {% schema %}
 {
   "name": "Nav Bar",
@@ -123,7 +343,70 @@
           "type": "text",
           "label": "TargetId",
           "id": "target_id",
-          "default": "#section-id"
+          "default": "section-id"
+        }
+      ]
+    },
+    {
+      "type": "nav-bar-block",
+      "name": "Nav Bar Block",
+      "settings": [
+        {
+          "type": "color_scheme",
+          "id": "color_scheme",
+          "label": "Color scheme",
+          "default": "scheme-4"
+        },
+        {
+          "type": "image_picker",
+          "label": "Image",
+          "id": "image"
+        },
+        {
+          "type": "text",
+          "label": "title",
+          "id": "title",
+          "default": "title"
+        },
+        {
+          "type": "text",
+          "label": "content",
+          "id": "content",
+          "default": "content"
+        },
+        {
+          "type": "text",
+          "label": "TargetId",
+          "id": "target_id",
+          "default": "section-id"
+        }
+      ]
+    },
+    {
+      "type": "collapsible",
+      "name": "Collapsible",
+      "settings": [
+        {
+          "type": "text",
+          "label": "title",
+          "id": "title",
+          "default": "title"
+        },
+        {
+          "type": "image_picker",
+          "label": "Image",
+          "id": "image"
+        },
+        {
+          "type": "richtext",
+          "label": "content",
+          "id": "content"
+        },
+        {
+          "type": "text",
+          "label": "TargetId",
+          "id": "target_id",
+          "default": "section-id"
         }
       ]
     }
