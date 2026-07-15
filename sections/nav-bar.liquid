@@ -91,7 +91,7 @@
           }
         });
       },
-      { rootMargin: '-10% 0px -10% 0px', threshold: 0 }
+      { rootMargin: '-15% 0px -85% 0px', threshold: 0 }
     );
     links.forEach(function (link) {
       var target = document.querySelector('#' + link.dataset.target);
@@ -99,8 +99,16 @@
         e.preventDefault();
         if (target) {
           var navBarEl = document.querySelector('.nav-bar');
+          var headerHeight = header.offsetHeight;
+          var targetTop = target.getBoundingClientRect().top + window.scrollY;
+          var isScrollingUp = targetTop < window.scrollY;
+          console.log(targetTop, window.scrollY);
+          if (!isScrollingUp) {
+            headerHeight = 0;
+          }
           var offset = navBarEl ? navBarEl.offsetHeight : 0;
-          var top = target.getBoundingClientRect().top + window.scrollY - offset;
+          console.log(headerHeight);
+          var top = targetTop - offset - headerHeight;
           window.scrollTo({ top: top, behavior: 'smooth' });
         }
       });
@@ -108,16 +116,17 @@
       if (target) observer.observe(target);
     });
     const buyNowBtn = document.querySelector('.buy-now');
+    var header = document.querySelector('.section-header');
+    var navBar = document.querySelector('.nav-bar');
     buyNowBtn.addEventListener('click', function () {
       var target = document.querySelector('product-info');
       if (!target) return;
+
       var navBarEl = document.querySelector('sticky-header');
       var offset = navBarEl ? navBarEl.offsetHeight : 0;
       var top = target.getBoundingClientRect().top + window.scrollY - offset;
       window.scrollTo({ top: top, behavior: 'smooth' });
     });
-    var header = document.querySelector('.section-header');
-    var navBar = document.querySelector('.nav-bar');
 
     if (header && navBar) {
       var headerObserver = new MutationObserver(function (mutations) {

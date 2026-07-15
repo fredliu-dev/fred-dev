@@ -96,18 +96,18 @@
             "target_id": "overview"
           }
         },
-        "nav_bar_item_efV7Wz": {
-          "type": "nav-bar-item",
-          "settings": {
-            "text": "Softwares Download",
-            "target_id": "softwares-download"
-          }
-        },
         "nav_bar_item_3D7tAE": {
           "type": "nav-bar-item",
           "settings": {
             "text": "Specifications",
             "target_id": "specifications"
+          }
+        },
+        "nav_bar_item_efV7Wz": {
+          "type": "nav-bar-item",
+          "settings": {
+            "text": "Softwares Download",
+            "target_id": "softwares-download"
           }
         },
         "nav_bar_item_nJgrdq": {
@@ -168,8 +168,8 @@
       "block_order": [
         "title_cjNVYL",
         "nav_bar_item_czDpxY",
-        "nav_bar_item_efV7Wz",
         "nav_bar_item_3D7tAE",
+        "nav_bar_item_efV7Wz",
         "nav_bar_item_nJgrdq",
         "nav_bar_block_KhDpim",
         "nav_bar_block_K3AbDM",
