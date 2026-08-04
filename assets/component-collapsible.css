@@ -1,5 +1,6 @@
  .collapsible {
      overflow: hidden;
+     user-select: none;
  }
 
  .collapsible>.collapsible-title {

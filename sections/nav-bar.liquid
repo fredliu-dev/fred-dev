@@ -6,21 +6,37 @@
   <div class="nav-bar color-{{ setting.color_scheme }} gradient">
     {% for block in blocks %}
       {% if block.type == 'title' %}
-        <h2>{{ product.title }}</h2>
+        <h2 class="nav-bar-desktop-title">{{ product.title }}</h2>
       {% endif %}
     {% endfor %}
+
+    {% for block in blocks %}
+      {% if block.type == 'title' %}
+        <div class="nav-bar-mobile-header">
+          <button class="nav-bar-mobile-toggle" type="button" aria-label="Toggle navigation">
+            <span class="svg-wrapper">{{- 'icon-down.svg' | inline_asset_content -}}</span>
+          </button>
+          <div class="nav-bar-mobile-title">
+            <h2>{{ product.title }}</h2>
+            <span class="nav-bar-mobile-price">{{ product.selected_or_first_available_variant.price | money }}</span>
+          </div>
+        </div>
+      {% endif %}
+    {% endfor %}
+
     <nav class="nav-bar-menu">
       {% for block in blocks %}
         {% if block.type == 'nav-bar-item' %}
           {% assign item = block.settings %}
           {% assign text = item.text %}
           {% assign target_id = item.target_id %}
-          <a href="#{{ target_id }}" data-target="{{ target_id }}">{{ text }}</a>
+          <a href="#{{ target_id }}" data-target="{{ target_id }}">{{ text | split: ' ' | first }}</a>
         {% endif %}
       {% endfor %}
     </nav>
+
     <div class="button-list">
-      <form method="post" class="js-product-form" action="{{ routes.cart_add_url }}">
+      <form method="post" class="js-product-form nav-bar-add-to-cart" action="{{ routes.cart_add_url }}">
         <input type="hidden" name="id" value="{{ product.selected_or_first_available_variant.id }}">
         <button type="submit" class="add-to-cart">Add To Cart</button>
       </form>
@@ -116,6 +132,18 @@
       if (target) observer.observe(target);
     });
     const buyNowBtn = document.querySelector('.buy-now');
+    const mobileToggle = document.querySelector('.nav-bar-mobile-toggle');
+    const navBarEl = document.querySelector('.nav-bar');
+
+    if (mobileToggle && navBarEl) {
+      var toggleNav = function (e) {
+        if (e) e.preventDefault();
+        navBarEl.classList.toggle('is-open');
+      };
+      mobileToggle.addEventListener('click', toggleNav);
+      mobileToggle.addEventListener('touchstart', toggleNav);
+    }
+
     var header = document.querySelector('.section-header');
     var navBar = document.querySelector('.nav-bar');
     buyNowBtn.addEventListener('click', function () {
@@ -163,6 +191,21 @@
     padding: 8px 24px;
     border-radius: 6px;
     background: var(--Dark_Grey, #2a2a2a);
+  }
+
+  @media screen and (max-width: 749px) {
+    .nav-body .collapsible {
+      width: 80%;
+      padding: 8px 16px;
+    }
+
+    .nav-body .collapsible > .collapsible-title {
+      font-size: 18px;
+    }
+
+    .nav-body .collapsible > .collapsible-content {
+      font-size: 14px;
+    }
   }
   .button-list {
     display: flex;
@@ -240,6 +283,33 @@
     font-weight: 400;
     line-height: 150%; /* 30px */
   }
+
+  @media screen and (max-width: 749px) {
+    .nav-body-item-both,
+    .nav-body-item-both:nth-child(even),
+    .nav-body-item-both:nth-child(odd) {
+      flex-direction: column;
+    }
+
+    .nav-body-item-both .left,
+    .nav-body-item-both .right {
+      max-width: 100%;
+    }
+
+    .nav-body-item-both:nth-child(even) .right,
+    .nav-body-item-both:nth-child(odd) .right {
+      padding: 0 24px;
+    }
+
+    .nav-body-item-both .right h2 {
+      font-size: 20px;
+    }
+
+    .nav-body-item-both .right p {
+      font-size: 16px;
+    }
+  }
+
   .nav-body-item-both {
     display: flex;
     align-items: center;
@@ -279,7 +349,7 @@
     transition: all 0.1s ease;
   }
 
-  .nav-bar h2 {
+  .nav-bar-desktop-title {
     grid-area: icon;
     margin: 0;
     color: var(--Pure_White, #fff);
@@ -288,6 +358,115 @@
     font-style: normal;
     font-weight: 400;
     line-height: normal;
+  }
+
+  .nav-bar-mobile-header {
+    display: none;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .nav-bar-mobile-toggle {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+    padding: 4px;
+    border: none;
+    background: transparent;
+    color: inherit;
+    cursor: pointer;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  .nav-bar-mobile-toggle .svg-wrapper {
+    width: 16px;
+    height: 16px;
+    transition: transform 0.2s ease;
+    pointer-events: none;
+  }
+
+  .nav-bar.is-open .nav-bar-mobile-toggle .svg-wrapper {
+    transform: rotate(180deg);
+  }
+
+  .nav-bar-mobile-title {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+
+  .nav-bar-mobile-title h2 {
+    margin: 0;
+    color: var(--Pure_White, #fff);
+    font-family: Replica-Bold;
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+  }
+
+  .nav-bar-mobile-price {
+    color: #e02020;
+    font-family: 'Replica Pro';
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+  }
+
+  @media screen and (max-width: 749px) {
+    .nav-bar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 12px 16px;
+      flex-wrap: wrap;
+    }
+
+    .nav-bar-desktop-title {
+      display: none;
+    }
+
+    .nav-bar-mobile-header {
+      display: flex;
+    }
+
+    .nav-bar-menu {
+      order: 3;
+      width: 100%;
+      flex-direction: row;
+      align-items: center;
+      justify-content: flex-start;
+      gap: 5px !important;
+      padding: 0;
+      max-height: 0;
+      overflow: hidden;
+      opacity: 0;
+      transition: max-height 0.3s ease, opacity 0.3s ease, padding 0.3s ease;
+    }
+
+    .nav-bar.is-open .nav-bar-menu {
+      max-height: 200px;
+      padding: 14px 0;
+      opacity: 1;
+    }
+
+    .nav-bar-add-to-cart {
+      display: none;
+    }
+
+    .button-list {
+      gap: 0;
+    }
+
+    .buy-now {
+      width: auto;
+      padding: 10px 20px;
+      border-radius: 6px;
+      font-size: 12px;
+    }
   }
 
   .nav-bar-menu {
@@ -305,7 +484,7 @@
     outline: none;
     color: var(--Text_white, rgba(255, 255, 255, 0.87));
     font-family: 'Replica Pro';
-    font-size: 16px;
+    font-size: 14px;
     font-style: normal;
     font-weight: 400;
     line-height: normal;
