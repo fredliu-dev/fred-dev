@@ -1,0 +1,8 @@
+[environments.dev]
+project_desc = "测试"
+domain = "https://fred-dev-jn1kgwxa.myshopify.com"
+theme = "190557454624"
+store = "fred-dev-jn1kgwxa.myshopify.com"
+port = 9292
+preview_key = ""
+_branch = "dev/feature-fred-001"
