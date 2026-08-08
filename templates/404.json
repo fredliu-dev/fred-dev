@@ -9,12 +9,12 @@
  */
 {
   "sections": {
-    "main": {
+    "main2": {
       "type": "main-404",
       "settings": {}
     }
   },
   "order": [
-    "main"
+    "main2"
   ]
 }
