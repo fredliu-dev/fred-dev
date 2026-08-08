@@ -1,0 +1,616 @@
+{{ 'component-collapsible.css' | asset_url | stylesheet_tag }}
+<script src="{{ 'component-collapsible.js' | asset_url }}" defer></script>
+<div class="nav-container">
+  {% assign setting = section.settings %}
+  {% assign blocks = section.blocks %}
+  <div class="nav-bar color-{{ setting.color_scheme }} gradient">
+    {% for block in blocks %}
+      {% if block.type == 'title' %}
+        <h2 class="nav-bar-desktop-title">{{ product.title }}</h2>
+      {% endif %}
+    {% endfor %}
+
+    {% for block in blocks %}
+      {% if block.type == 'title' %}
+        <div class="nav-bar-mobile-header">
+          <button class="nav-bar-mobile-toggle" type="button" aria-label="Toggle navigation">
+            <span class="svg-wrapper">{{- 'icon-down.svg' | inline_asset_content -}}</span>
+          </button>
+          <div class="nav-bar-mobile-title">
+            <h2>{{ product.title }}</h2>
+            <span class="nav-bar-mobile-price">{{ product.selected_or_first_available_variant.price | money }}</span>
+          </div>
+        </div>
+      {% endif %}
+    {% endfor %}
+
+    <nav class="nav-bar-menu">
+      {% for block in blocks %}
+        {% if block.type == 'nav-bar-item' %}
+          {% assign item = block.settings %}
+          {% assign text = item.text %}
+          {% assign target_id = item.target_id %}
+          <a href="#{{ target_id }}" data-target="{{ target_id }}">{{ text | split: ' ' | first }}</a>
+        {% endif %}
+      {% endfor %}
+    </nav>
+
+    <div class="button-list">
+      <form method="post" class="js-product-form nav-bar-add-to-cart" action="{{ routes.cart_add_url }}">
+        <input type="hidden" name="id" value="{{ product.selected_or_first_available_variant.id }}">
+        <button type="submit" class="add-to-cart">Add To Cart</button>
+      </form>
+      <button class="buy-now">Buy Now</button>
+    </div>
+  </div>
+
+  <div
+    class="nav-body color-{{ setting.color_scheme }}"
+  >
+    {% for block in blocks %}
+      {% assign item = block.settings %}
+      {% assign title = item.title %}
+      {% assign content = item.content %}
+      {% assign target_id = item.target_id %}
+      {% if block.type == 'nav-bar-block' %}
+        {% if title != '' and content != '' %}
+          <div id="{{ target_id }}" class="nav-body-item-both">
+            <div class="left">
+              {% render 'image', image: item.image %}
+            </div>
+            <div class="right">
+              <h2>{{ title }}</h2>
+              <p>{{ content }}</p>
+            </div>
+          </div>
+        {% else %}
+          <div id="{{ target_id }}" class="nav-body-item">
+            {% render 'image', image: item.image %}
+          </div>
+        {% endif %}
+      {% endif %}
+    {% endfor %}
+    <div class="nav-body-item-collapsible">
+      {% for block in blocks %}
+        {% assign item = block.settings %}
+        {% assign title = item.title %}
+        {% assign content = item.content %}
+        {% assign target_id = item.target_id %}
+        {% if block.type == 'collapsible' %}
+          {% render 'collapsible', title: title, content: content, id: target_id, image: item.image %}
+        {% endif %}
+      {% endfor %}
+    </div>
+  </div>
+</div>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    var container = document.querySelector('.nav-container');
+    if (!container) return;
+    var navBar = container.querySelector('.nav-bar');
+    var links = navBar ? navBar.querySelectorAll('.nav-bar-menu a[data-target]') : [];
+
+    var activeLink = null;
+    var observer = new IntersectionObserver(
+      function (entries) {
+        entries.forEach(function (entry) {
+          if (entry.isIntersecting) {
+            var id = entry.target.id;
+            links.forEach(function (link) {
+              if (link.dataset.target === id) {
+                if (activeLink) activeLink.classList.remove('active');
+                link.classList.add('active');
+                activeLink = link;
+              }
+            });
+          }
+        });
+      },
+      { rootMargin: '-15% 0px -85% 0px', threshold: 0 }
+    );
+    links.forEach(function (link) {
+      var target = document.querySelector('#' + link.dataset.target);
+      link.addEventListener('click', function (e) {
+        e.preventDefault();
+        if (target) {
+          var navBarEl = document.querySelector('.nav-bar');
+          var headerHeight = header.offsetHeight;
+          var targetTop = target.getBoundingClientRect().top + window.scrollY;
+          var isScrollingUp = targetTop < window.scrollY;
+          console.log(targetTop, window.scrollY);
+          if (!isScrollingUp) {
+            headerHeight = 0;
+          }
+          var offset = navBarEl ? navBarEl.offsetHeight : 0;
+          console.log(headerHeight);
+          var top = targetTop - offset - headerHeight;
+          window.scrollTo({ top: top, behavior: 'smooth' });
+        }
+      });
+
+      if (target) observer.observe(target);
+    });
+    const buyNowBtn = document.querySelector('.buy-now');
+    const mobileToggle = document.querySelector('.nav-bar-mobile-toggle');
+    const navBarEl = document.querySelector('.nav-bar');
+
+    if (mobileToggle && navBarEl) {
+      var toggleNav = function (e) {
+        if (e) e.preventDefault();
+        navBarEl.classList.toggle('is-open');
+      };
+      mobileToggle.addEventListener('click', toggleNav);
+      mobileToggle.addEventListener('touchstart', toggleNav);
+    }
+
+    var header = document.querySelector('.section-header');
+    var navBar = document.querySelector('.nav-bar');
+    buyNowBtn.addEventListener('click', function () {
+      var target = document.querySelector('product-info');
+      if (!target) return;
+
+      var navBarEl = document.querySelector('sticky-header');
+      var offset = navBarEl ? navBarEl.offsetHeight : 0;
+      var top = target.getBoundingClientRect().top + window.scrollY - offset;
+      window.scrollTo({ top: top, behavior: 'smooth' });
+    });
+
+    if (header && navBar) {
+      var headerObserver = new MutationObserver(function (mutations) {
+        if (
+          header.classList.contains('shopify-section-header-sticky') &&
+          !header.classList.contains('shopify-section-header-hidden')
+        ) {
+          navBar.style.top = 'var(--header-height)';
+        } else {
+          navBar.style.top = '0';
+        }
+      });
+
+      headerObserver.observe(header, {
+        attributes: true,
+        attributeFilter: ['class'],
+      });
+    }
+  });
+</script>
+
+<style>
+  .nav-body-item-collapsible {
+    width: 100%;
+    padding: 80px 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    gap: 24px;
+  }
+  .nav-body .collapsible {
+    width: 60%;
+    padding: 8px 24px;
+    border-radius: 6px;
+    background: var(--Dark_Grey, #2a2a2a);
+  }
+
+  @media screen and (max-width: 749px) {
+    .nav-body .collapsible {
+      width: 80%;
+      padding: 8px 16px;
+    }
+
+    .nav-body .collapsible > .collapsible-title {
+      font-size: 18px;
+    }
+
+    .nav-body .collapsible > .collapsible-content {
+      font-size: 14px;
+    }
+  }
+  .button-list {
+    display: flex;
+    gap: 32px;
+    align-items: center;
+    justify-content: flex-end;
+  }
+  .add-to-cart {
+    display: flex;
+    width: 112px;
+    padding: 14px 4px;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    align-self: stretch;
+    border-radius: 12px;
+    border: 1px solid var(--Text_white, rgba(255, 255, 255, 0.87));
+    background: transparent;
+    color: var(--Text_white, rgba(255, 255, 255, 0.87));
+    cursor: pointer;
+  }
+  .buy-now {
+    display: flex;
+    width: 112px;
+    padding: 14px 4px;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    align-self: stretch;
+    border-radius: 8px;
+    background: var(--Pure_White, #fff);
+    cursor: pointer;
+  }
+  .nav-body-item-both:nth-child(even) {
+    flex-direction: row;
+  }
+  .nav-body-item-both:nth-child(odd) {
+    flex-direction: row-reverse;
+  }
+  .nav-body-item-both:nth-child(even) .right {
+    padding: 0 208px 0 64px;
+  }
+  .nav-body-item-both:nth-child(odd) .right {
+    padding: 0 64px 0 208px;
+  }
+  .nav-body-item-both .left,
+  .nav-body-item-both .right {
+    flex: 1;
+    max-width: 50%;
+  }
+  .nav-body-item-both .right {
+    display: flex;
+    flex-direction: column;
+    justify-items: center;
+    justify-content: center;
+    gap: 24px;
+    box-sizing: border-box;
+  }
+  .nav-body-item-both .right h2 {
+    text-align: center;
+    color: var(--Pure_White, #fff);
+    font-family: 'Replica ProTT';
+    font-size: 24px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+    margin: 0;
+  }
+  .nav-body-item-both .right p {
+    text-align: center;
+    color: var(--Text_white, rgba(255, 255, 255, 0.87));
+    font-family: 'Replica Pro';
+    font-size: 20px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 150%; /* 30px */
+  }
+
+  @media screen and (max-width: 749px) {
+    .nav-body-item-both,
+    .nav-body-item-both:nth-child(even),
+    .nav-body-item-both:nth-child(odd) {
+      flex-direction: column;
+    }
+
+    .nav-body-item-both .left,
+    .nav-body-item-both .right {
+      max-width: 100%;
+    }
+
+    .nav-body-item-both:nth-child(even) .right,
+    .nav-body-item-both:nth-child(odd) .right {
+      padding: 0 24px;
+    }
+
+    .nav-body-item-both .right h2 {
+      font-size: 20px;
+    }
+
+    .nav-body-item-both .right p {
+      font-size: 16px;
+    }
+  }
+
+  .nav-body-item-both {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 24px;
+  }
+  .nav-body {
+    background: black;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+  }
+  .nav-body img {
+    width: 100%;
+    object-fit: cover;
+    height: auto !important;
+  }
+  .nav-body-item {
+    gap: 24px;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .nav-bar {
+    position: sticky;
+    top: 0;
+    background: rgb(var(--color-background));
+    color: rgb(var(--color-foreground));
+    display: grid;
+    grid-template-columns: 2fr 4fr 2fr;
+    grid-template-areas: 'icon nav-bar-item button';
+    align-items: center;
+    justify-content: center;
+    padding: 16px 80px;
+    transition: all 0.1s ease;
+  }
+
+  .nav-bar-desktop-title {
+    grid-area: icon;
+    margin: 0;
+    color: var(--Pure_White, #fff);
+    font-family: Replica-Bold;
+    font-size: 24px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+  }
+
+  .nav-bar-mobile-header {
+    display: none;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .nav-bar-mobile-toggle {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+    padding: 4px;
+    border: none;
+    background: transparent;
+    color: inherit;
+    cursor: pointer;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  .nav-bar-mobile-toggle .svg-wrapper {
+    width: 16px;
+    height: 16px;
+    transition: transform 0.2s ease;
+    pointer-events: none;
+  }
+
+  .nav-bar.is-open .nav-bar-mobile-toggle .svg-wrapper {
+    transform: rotate(180deg);
+  }
+
+  .nav-bar-mobile-title {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+
+  .nav-bar-mobile-title h2 {
+    margin: 0;
+    color: var(--Pure_White, #fff);
+    font-family: Replica-Bold;
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+  }
+
+  .nav-bar-mobile-price {
+    color: #e02020;
+    font-family: 'Replica Pro';
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+  }
+
+  @media screen and (max-width: 749px) {
+    .nav-bar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 12px 16px;
+      flex-wrap: wrap;
+    }
+
+    .nav-bar-desktop-title {
+      display: none;
+    }
+
+    .nav-bar-mobile-header {
+      display: flex;
+    }
+
+    .nav-bar-menu {
+      order: 3;
+      width: 100%;
+      flex-direction: row;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px !important;
+      padding: 0;
+      max-height: 0;
+      overflow: hidden;
+      opacity: 0;
+      transition: max-height 0.3s ease, opacity 0.3s ease, padding 0.3s ease;
+    }
+
+    .nav-bar.is-open .nav-bar-menu {
+      max-height: 200px;
+      padding: 14px 0;
+      opacity: 1;
+    }
+
+    .nav-bar-add-to-cart {
+      display: none;
+    }
+
+    .button-list {
+      gap: 0;
+    }
+
+    .buy-now {
+      width: auto;
+      padding: 10px 20px;
+      border-radius: 6px;
+      font-size: 12px;
+    }
+  }
+
+  .nav-bar-menu {
+    grid-area: nav-bar-item;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 24px;
+  }
+
+  .nav-bar-menu a {
+    display: inline-block;
+    text-decoration: none;
+    color: inherit;
+    outline: none;
+    color: var(--Text_white, rgba(255, 255, 255, 0.87));
+    font-family: 'Replica Pro';
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+  }
+
+  .nav-bar-menu a.active {
+    color: var(--Pure_White, #fff);
+    font-family: Replica-Bold;
+    font-size: 20px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+    text-decoration-line: underline;
+    text-decoration-style: solid;
+    text-decoration-skip-ink: none;
+    text-decoration-thickness: auto;
+    text-underline-offset: auto;
+    text-underline-position: from-font;
+  }
+</style>
+
+{% schema %}
+{
+  "name": "Nav Bar",
+  "tag": "section",
+  "class": "section",
+  "blocks": [
+    {
+      "type": "title",
+      "name": "t:sections.main-product.blocks.title.name",
+      "limit": 1
+    },
+    {
+      "type": "nav-bar-item",
+      "name": "Nav Bar Item",
+      "settings": [
+        {
+          "type": "text",
+          "label": "Text",
+          "id": "text",
+          "default": "Nav Bar Item"
+        },
+        {
+          "type": "text",
+          "label": "TargetId",
+          "id": "target_id",
+          "default": "section-id"
+        }
+      ]
+    },
+    {
+      "type": "nav-bar-block",
+      "name": "Nav Bar Block",
+      "settings": [
+        {
+          "type": "color_scheme",
+          "id": "color_scheme",
+          "label": "Color scheme",
+          "default": "scheme-4"
+        },
+        {
+          "type": "image_picker",
+          "label": "Image",
+          "id": "image"
+        },
+        {
+          "type": "text",
+          "label": "title",
+          "id": "title",
+          "default": "title"
+        },
+        {
+          "type": "text",
+          "label": "content",
+          "id": "content",
+          "default": "content"
+        },
+        {
+          "type": "text",
+          "label": "TargetId",
+          "id": "target_id",
+          "default": "section-id"
+        }
+      ]
+    },
+    {
+      "type": "collapsible",
+      "name": "Collapsible",
+      "settings": [
+        {
+          "type": "text",
+          "label": "title",
+          "id": "title",
+          "default": "title"
+        },
+        {
+          "type": "image_picker",
+          "label": "Image",
+          "id": "image"
+        },
+        {
+          "type": "richtext",
+          "label": "content",
+          "id": "content"
+        },
+        {
+          "type": "text",
+          "label": "TargetId",
+          "id": "target_id",
+          "default": "section-id"
+        }
+      ]
+    }
+  ],
+  "settings": [
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "Color scheme",
+      "default": "scheme-4"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Nav Bar"
+    }
+  ]
+}
+{% endschema %}

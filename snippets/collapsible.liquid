@@ -1,0 +1,14 @@
+<div class="collapsible" id="{{ id }}">
+  <div class="collapsible-title">
+    <span>{{ title }}</span>
+    {{- 'icon-down.svg' | inline_asset_content -}}
+  </div>
+  <div class="collapsible-content">
+    {% if image %}
+      {% render 'image', image: image %}
+    {% endif %}
+    {% if content %}
+      {{ content }}
+    {% endif %}
+  </div>
+</div>

@@ -1,0 +1,188 @@
+{{ 'section-demo-icons.css' | asset_url | stylesheet_tag }}
+{{ 'https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css' | stylesheet_tag }}
+<script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js" defer></script>
+<script src="{{ 'section-demo-icons.js' | asset_url }}" defer></script>
+
+<div class="swiper-block">
+  <h2>{{ section.settings.title | escape }}</h2>
+  {% assign collections = section.settings.collection %}
+  <div class="tablist">
+    {% for collection in collections %}
+      {% if collections.size <= 1 %}
+        {% break %}
+      {% endif %}
+      <button
+        type="button"
+        class="tab-item{% if forloop.first %} is-active{% endif %}"
+        data-id="{{ collection.id }}"
+      >
+        {{ collection.title | escape }}
+      </button>
+    {% endfor %}
+  </div>
+  {%- for block in section.blocks -%}
+    {% assign products = block.settings.collection.products %}
+    {%- if block.type == 'slide' -%}
+      <div class="swiper-outer{% if forloop.first %} is-active{% endif %}">
+        <div
+          class="swiper-container"
+          data-id="{{ block.settings.collection.id }}"
+        >
+          <div class="swiper-wrapper">
+            {%- for product in products -%}
+              <div class="swiper-slide" id="{{ product.id }}">
+                {% if product.variants.size > 1 %}
+                  {% for variant in product.variants %}
+                    <div class="swiper-body{% if forloop.first %} is-active{% endif %}" data-id="{{ variant.id }}">
+                      {% if variant.featured_image.src != blank %}
+                        <a href="{{ variant.url }}" target="_blank">
+                          <img
+                            src="{{ variant.featured_image.src | image_url }}"
+                            alt=""
+                            width="100"
+                            height="100"
+                            loading="lazy"
+                          >
+                        </a>
+                      {% else %}
+                        {{ 'product-1' | placeholder_svg_tag: 'placeholder-svg' }}
+                      {% endif %}
+                      <div class="swiper-slide-footer">
+                        {% if variant.compare_at_price > variant.price %}
+                          {% assign discount_percent = variant.compare_at_price
+                            | minus: variant.price
+                            | times: 100.0
+                            | divided_by: variant.compare_at_price
+                            | round: 0
+                          %}
+                          <div class="discount-badge">{{ discount_percent }}% OFF</div>
+                        {% endif %}
+                        <h3>
+                          {{ product.title | escape }}
+                          {{ variant.title | escape }}
+                        </h3>
+                        <div class="jdgm-widget jdgm-preview-badge" data-id="{{ product.id }}"></div>
+                        <div class="product-swatches">
+                          {% for variant in product.variants %}
+                            <button
+                              type="button"
+                              class="swatch{% if forloop.first %} is-active{% endif %}"
+                              data-id="{{ variant.id }}"
+                            ></button>
+                          {% endfor %}
+                        </div>
+                        <div class="price">
+                          <div class="now-price">{{ variant.price | money }}</div>
+                          {% if variant.compare_at_price > variant.price %}
+                            <div class="old-price">{{ variant.compare_at_price | money }}</div>
+                          {% endif %}
+                        </div>
+                        <form method="post" class="js-product-form" action="{{ routes.cart_add_url }}">
+                          <input type="hidden" name="id" value="{{ variant.id }}">
+                          <button type="submit" class="btn">
+                            Add To Cart
+                            {% render 'icon-buy' %}
+                          </button>
+                        </form>
+                      </div>
+                    </div>
+                  {% endfor %}
+                {% else %}
+                  {% if product.featured_image != blank %}
+                    <a href="{{ product.url }}" target="_blank">
+                      <img
+                        src="{{ product.featured_image | image_url }}"
+                        alt=""
+                        width="100"
+                        height="100"
+                        loading="lazy"
+                      >
+                    </a>
+                  {% endif %}
+                  <div class="swiper-slide-footer">
+                    {% if product.compare_at_price > product.price %}
+                      {% assign discount_percent = product.compare_at_price
+                        | minus: product.price
+                        | times: 100.0
+                        | divided_by: product.compare_at_price
+                        | round: 0
+                      %}
+                      <div class="discount-badge">{{ discount_percent }}% OFF</div>
+                    {% endif %}
+                    <h3>{{ product.title | escape }}</h3>
+                    <div class="jdgm-widget jdgm-preview-badge" data-id="{{ product.id }}"></div>
+                    <div class="price">
+                      <div class="now-price">{{ product.price | money }}</div>
+                      {% if product.compare_at_price > product.price %}
+                        <div class="old-price">{{ product.compare_at_price | money }}</div>
+                      {% endif %}
+                    </div>
+                    <form method="post" class="js-product-form" action="{{ routes.cart_add_url }}">
+                      <input type="hidden" name="id" value="{{ product.selected_or_first_available_variant.id }}">
+                      <button type="submit" class="btn">
+                        Add To Cart
+                        {% render 'icon-buy' %}
+                      </button>
+                    </form>
+                  </div>
+                {% endif %}
+              </div>
+            {%- endfor -%}
+          </div>
+        </div>
+        <div class="swiper-button-prev">{% render 'arrow-left' %}</div>
+        <div class="swiper-button-next">{% render 'arrow-right' %}</div>
+        <div class="swiper-pagination"></div>
+      </div>
+    {%- endif -%}
+  {%- endfor -%}
+</div>
+
+{% schema %}
+{
+  "name": "demo-icons",
+  "tag": "section",
+  "class": "section",
+  "disabled_on": {
+    "groups": ["header", "footer"]
+  },
+  "settings": [
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Title"
+    },
+    {
+      "type": "collection_list",
+      "id": "collection",
+      "label": "选择产品集"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "@app"
+    },
+    {
+      "type": "slide",
+      "name": "Slide",
+      "settings": [
+        {
+          "type": "collection",
+          "id": "collection",
+          "label": "选择产品集"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Demo Icons",
+      "blocks": [
+        {
+          "type": "slide"
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}
