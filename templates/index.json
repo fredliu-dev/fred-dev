@@ -9,7 +9,7 @@
  */
 {
   "sections": {
-    "demo-icons": {
+    "demo-icons222": {
       "type": "demo-icons",
       "blocks": {
         "slide_wcBVyr": {
@@ -25,16 +25,10 @@
           }
         }
       },
-      "block_order": [
-        "slide_wcBVyr",
-        "slide_Kw7Te8"
-      ],
+      "block_order": ["slide_wcBVyr", "slide_Kw7Te8"],
       "settings": {
-        "title": "Top Picks For you1",
-        "collection": [
-          "best-sellers",
-          "best-sellers-copy"
-        ]
+        "title": "Top Picks For you2223",
+        "collection": ["best-sellers", "best-sellers-copy"]
       }
     },
     "svg-list": {
@@ -167,9 +161,5 @@
       "settings": {}
     }
   },
-  "order": [
-    "demo-icons",
-    "svg-list",
-    "vido-list"
-  ]
+  "order": ["demo-icons222", "svg-list", "vido-list"]
 }
